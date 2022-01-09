@@ -1,0 +1,34 @@
+# baseURL
+@baseURL = http://localhost:8080
+
+###
+# Find All Tickers
+GET {{ baseURL }}/tickers
+
+###
+# Find Ticker By Id
+GET {{ baseURL }}/tickers/1
+
+###
+# Create Ticker
+POST {{ baseURL }}/tickers
+Content-Type: application/json
+
+{
+    "email": "example@email.com",
+    "password": "password"
+}
+
+###
+# Modify Ticker By Id
+PUT {{ baseURL }}/tickers/1
+Content-Type: application/json
+
+{
+    "email": "example@email.com",
+    "password": "password"
+}
+
+###
+# Delete Ticker By Id
+DELETE {{ baseURL }}/tickers/1
