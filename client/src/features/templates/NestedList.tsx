@@ -29,12 +29,12 @@ export default function NestedList(props: any) {
 
     useEffect(() => {
         dispatch(attemptGetInsights(insightParams));
-        if(insights.id === '' || insights.id === undefined) {
+        if(insights._id === '' || insights._id === undefined) {
             setLoading(true);
         }else{
             setLoading(false);
         }
-    }, [insightParams, insights.id, dispatch]); 
+    }, [insightParams, insights._id, dispatch]); 
 
     const handleClick = () => {
         setOpen(!open);

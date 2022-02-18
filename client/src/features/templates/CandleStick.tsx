@@ -52,7 +52,7 @@ export default function CandleStick (props:any) {
 
     useEffect(() => {
       dispatch(attemptGetTickers(tickerParams));
-      if (tickers.id === '' || tickers.id === undefined) {
+      if (tickers._id === '' || tickers._id === undefined) {
         setLoading(true);
       } else {
         var jsonData: any = {};
@@ -100,7 +100,7 @@ export default function CandleStick (props:any) {
         });
         setLoading(false);
       }
-    },[tickerParams, tickers.id, dispatch]);
+    },[tickerParams, tickers._id, dispatch]);
 
     return (
       <div>

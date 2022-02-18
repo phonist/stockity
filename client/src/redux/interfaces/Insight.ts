@@ -1,5 +1,5 @@
 export interface Insight {
-    id: string;
+    _id: string;
     timestamp: Date;
     name: string;
     meta: any;

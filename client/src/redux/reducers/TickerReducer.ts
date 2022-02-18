@@ -6,7 +6,7 @@ import {
 
 const initialStateGetTickers: GetTickersStateType = {
     tickers: {
-        id: '',
+        _id: '',
         name: '',
         price: 0,
         datetime: new Date(),

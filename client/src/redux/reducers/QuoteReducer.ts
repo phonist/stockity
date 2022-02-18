@@ -6,7 +6,7 @@ import {
 
 const initialStateGetQuotes: GetQuotesStateType = {
     quotes: {
-        id: '',
+        _id: '',
         timestamp: new Date(),
         name: '',
         meta: {}

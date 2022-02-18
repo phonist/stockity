@@ -21,12 +21,12 @@ function MetaBoard(props: any) {
 
     useEffect(() => {
         dispatch(attemptGetQuotes(quoteParams));
-        if(quotes.id=== '' || quotes.id === undefined) {
+        if(quotes._id=== '' || quotes._id === undefined) {
             setLoading(true);
         }else{
             setLoading(false);
         }
-    }, [dispatch, quotes.id, quoteParams]);
+    }, [dispatch, quotes._id, quoteParams]);
 
     return ( 
         <React.Fragment>

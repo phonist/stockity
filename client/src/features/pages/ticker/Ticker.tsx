@@ -47,16 +47,7 @@ export default function TickerPage() {
   });
 
   useEffect(() => {
-    // dispatch(attemptGetTickers(tickerParams));
-    // dispatch(attemptGetQuotes(quoteParams));
-    // dispatch(attemptGetQuoteSummaries(quoteSummaryParams));
-    // dispatch(attemptGetInsights(insightParams));
   }, [dispatch]);
-
-  // const tickers = useSelector((state: AppState) => state.tickers);
-  // const quotes = useSelector((state: AppState) => state.quotes);
-  // const quoteSummaries = useSelector((state: AppState) => state.quoteSummaries);
-  // const insights = useSelector((state: AppState) => state.insights);
 
   return (
     <Box

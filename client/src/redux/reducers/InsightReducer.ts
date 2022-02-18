@@ -6,7 +6,7 @@ import {
 
 const initialStateGetInsights: GetInsightsStateType = {
     insights: {
-        id: '',
+        _id: '',
         timestamp: new Date(),
         name: '',
         meta: {},
