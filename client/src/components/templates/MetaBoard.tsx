@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import Title from './../atoms/Title';
+import Title from '../atoms/Title';
 import { attemptGetQuotes } from '../../redux/thunks/Quotes';
 import { AppState } from '../../redux/store';
 
