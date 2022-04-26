@@ -4,6 +4,9 @@ export const GET_QUOTES = 'GET_QUOTES';
 
 export interface GetQuotesStateType {
     quotes: Quote;
+    loading: boolean;
+    error: any;
+    empty: boolean;
 }
 
 interface GetQuotesActionType {

@@ -1,7 +1,7 @@
 {
     "env": "development",
     "dbConfig": {
-        "host": "mongodb",
+        "host": "localhost",
         "database": "stockity_dev",
         "port": 27017
     },

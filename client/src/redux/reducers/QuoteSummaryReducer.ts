@@ -5,7 +5,15 @@ import {
 } from '../types/QuoteSummaryTypes';
 
 const initialStateGetQuoteSummaries: GetQuoteSummariesStateType = {
-    quoteSummaries: [],
+    quoteSummaries: {
+        _id: '',
+        timestamp: new Date(),
+        name: '',
+        meta: {}
+    },
+    loading: true,
+    error: null,
+    empty: true,
 };
 
 export const getQuoteSummariesReducer = (
@@ -17,6 +25,9 @@ export const getQuoteSummariesReducer = (
             return {
                 ...state,
                 quoteSummaries: action.payload,
+                loading: false,
+                error: null,
+                empty: false,
             };
         default:
             return state;

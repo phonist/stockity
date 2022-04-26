@@ -11,6 +11,9 @@ const initialStateGetInsights: GetInsightsStateType = {
         name: '',
         meta: {},
     },
+    loading: true,
+    error: null,
+    empty: true
 };
 
 export const getInsightsReducer = (
@@ -22,6 +25,9 @@ export const getInsightsReducer = (
             return {
                 ...state,
                 insights: action.payload,
+                loading: false,
+                error: null,
+                empty: false
             };
         default:
             return state;

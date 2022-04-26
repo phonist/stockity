@@ -16,9 +16,9 @@ export default function CandleStick (props:any) {
     const {
       tickerParams
     } = props;
-    const tickers = useSelector((state: AppState) => state.tickers).tickers;
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState(true);
+    const tickers = useSelector((state: AppState) => state.tickers);
+
     const [option, setOption] = useState<CandleStickProps>({
       chart: {
         type: 'candlestick',
@@ -52,20 +52,19 @@ export default function CandleStick (props:any) {
 
     useEffect(() => {
       dispatch(attemptGetTickers(tickerParams));
-      if (tickers._id === '' || tickers._id === undefined) {
-        setLoading(true);
-      } else {
+      if(!tickers.loading){
+        let data = tickers.tickers;
         var jsonData: any = {};
         let temp: any = [];
-        tickers.timestamp.forEach((item:any, index:any) => 
+        data.timestamp.forEach((item:any, index:any) => 
         {
           let jsonData: any = {};
           jsonData.x = new Date(item*1000).toISOString();
           jsonData.y = [
-            Number(tickers.indicators.quote[0].open[index].toFixed(2)), // open
-            Number(tickers.indicators.quote[0].high[index].toFixed(2)), // high
-            Number(tickers.indicators.quote[0].low[index].toFixed(2)),  // low
-            Number(tickers.indicators.quote[0].close[index].toFixed(2)) // close
+            Number(data.indicators.quote[0].open[index].toFixed(2)), // open
+            Number(data.indicators.quote[0].high[index].toFixed(2)), // high
+            Number(data.indicators.quote[0].low[index].toFixed(2)),  // low
+            Number(data.indicators.quote[0].close[index].toFixed(2)) // close
           ];
           temp.push(jsonData);
         });
@@ -75,7 +74,7 @@ export default function CandleStick (props:any) {
             height: 350,
           },
           title: {
-            text: tickers.meta.symbol,
+            text: data.meta.symbol,
             align: 'left'
           },
           xaxis: {
@@ -98,13 +97,12 @@ export default function CandleStick (props:any) {
           }],
           options: option,
         });
-        setLoading(false);
       }
-    },[tickerParams, tickers._id, dispatch]);
+    },[tickers.loading]);
 
     return (
       <div>
-        {loading ? (
+        {tickers.loading ? (
           <div>Loading...</div>
         ) : (
           <ReactApexChart options={state.options} series={state.series} type="candlestick" height={350} />

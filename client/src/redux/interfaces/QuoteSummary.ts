@@ -1,5 +1,5 @@
 export interface QuoteSummary {
-    _id: number;
+    _id: string;
     timestamp: Date;
     name: string;
     meta: any;

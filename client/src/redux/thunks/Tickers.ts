@@ -1,12 +1,16 @@
-import { getTickersAction } from "../actions/TickerActions";
+import { getTickersAction, errorTickerAction } from "../actions/TickerActions";
 import { Dispatch } from "redux";
-import { TickerActionTypes } from "../types/TickerTypes";
+import { TickerActionTypes, TickerErrorActionTypes } from "../types/TickerTypes";
 import { getTickers } from "../../api/ticker";
 
-export const attemptGetTickers = (params:any) => async (dispatch: Dispatch<TickerActionTypes>) => {
+export const attemptGetTickers = (params:any) => async (dispatch: Dispatch<TickerActionTypes | TickerErrorActionTypes>) => {
     const tickers = await getTickers(params)
-        .then(response => response.data)
-        .catch(error => error);
-
-    dispatch(getTickersAction(tickers));
+        .then(response => {
+            dispatch(getTickersAction(response.data));
+            return response.data
+        })
+        .catch(error => {
+            dispatch(errorTickerAction(error));
+            return error
+        });
 }

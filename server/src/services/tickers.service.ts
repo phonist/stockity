@@ -4,10 +4,12 @@ import { GetTickerChart, PostTickerChart, Ticker } from '@interfaces/tickers.int
 import tickerModel from '@models/tickers.model';
 import { isEmpty } from '@utils/util';
 import yahooRepository from '@repositories/yahoo.repository';
+import marketStackRepository from '@repositories/marketStack.repository';
 
 class TickerService {
   public tickers = tickerModel;
   public yahoo = new yahooRepository();
+  public marketStack = new marketStackRepository();
 
   public async findAllTicker(): Promise<Ticker[]> {
     const tickers: Ticker[] = await this.tickers.find();
@@ -74,9 +76,19 @@ class TickerService {
   }
 
   public async getChart(req: PostTickerChart): Promise<PostTickerChart> {
-    const getTickerChart: GetTickerChart = await this.yahoo.findChart(req);
-    const tickers: GetTickerChart = await this.tickers.create(getTickerChart);
-    return tickers;
+    try {
+      const getTickerChart: GetTickerChart = await this.yahoo.findChart(req);
+      // console.log('getTickerChart',getTickerChart);
+      return getTickerChart;
+    } catch (error) {
+      throw new HttpException(error.status, error.message);
+    }
+    // try {
+    //   const getTickerChart: GetTickerChart = await this.marketStack.findChart(req);
+    //   return getTickerChart;
+    // } catch (error) {
+    //   throw new HttpException(error.status, error.message);
+    // }
   }
 
   public async autocomplete(req: string): Promise<string> {

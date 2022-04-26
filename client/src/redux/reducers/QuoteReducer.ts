@@ -11,6 +11,9 @@ const initialStateGetQuotes: GetQuotesStateType = {
         name: '',
         meta: {}
     },
+    loading: true,
+    error: null,
+    empty: true,
 };
 
 export const getQuotesReducer = (
@@ -22,6 +25,9 @@ export const getQuotesReducer = (
             return {
                 ...state,
                 quotes: action.payload,
+                loading: false,
+                error: null,
+                empty: false,
             };
         default:
             return state;

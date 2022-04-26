@@ -24,7 +24,6 @@ class App {
     this.app = express();
     this.port = process.env.PORT || 3000;
     this.env = process.env.NODE_ENV || 'development';
-
     this.connectToDatabase();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
@@ -49,7 +48,7 @@ class App {
     if (this.env !== 'production') {
       set('debug', true);
     }
-
+    // console.log(dbConnection.url);
     connect(dbConnection.url, dbConnection.options);
   }
 

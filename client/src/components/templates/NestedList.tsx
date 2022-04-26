@@ -21,20 +21,14 @@ export default function NestedList(props: any) {
         insightParams
     } = props;
 
-    const insights = useSelector((state: AppState) => state.insights).insights;
+    const insights = useSelector((state: AppState) => state.insights);
 
     const [ open, setOpen] = useState(true);
-    const [ loading, setLoading ] = useState(true);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(attemptGetInsights(insightParams));
-        if(insights._id === '' || insights._id === undefined) {
-            setLoading(true);
-        }else{
-            setLoading(false);
-        }
-    }, [insightParams, insights._id, dispatch]); 
+    }, [insights.loading]); 
 
     const handleClick = () => {
         setOpen(!open);
@@ -51,12 +45,12 @@ export default function NestedList(props: any) {
                 </ListSubheader>
             }
         >
-            {loading ? (
+            {insights.loading ? (
                 <Typography>Loading...</Typography>
             ) : (
                 <>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                    {insights.meta.reports.map((insight: any) => (
+                    {insights.insights.meta.reports.map((insight: any) => (
                         <ListItemText
                             key={insight.id}
                             primary={insight.publishedOn}

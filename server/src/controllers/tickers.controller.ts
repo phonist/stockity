@@ -64,7 +64,6 @@ class TickersController {
   public getChart = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const getChart: GetTickerChart = await this.tickerService.getChart(req.body);
-
       res.status(200).json({ data: getChart, message: 'getChart' });
     } catch (error) {
       next(error);
