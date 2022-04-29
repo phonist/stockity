@@ -2,14 +2,14 @@ import {
     GET_QUOTESUMMARIES,
     GetQuoteSummariesStateType,
     QuoteSummaryActionTypes,
+    QuoteSummaryErrorActionTypes,
+    ERROR_QUOTESUMMARIES,
 } from '../types/QuoteSummaryTypes';
 
 const initialStateGetQuoteSummaries: GetQuoteSummariesStateType = {
     quoteSummaries: {
-        _id: '',
-        timestamp: new Date(),
-        name: '',
-        meta: {}
+        result: [],
+        error: null,
     },
     loading: true,
     error: null,
@@ -18,7 +18,7 @@ const initialStateGetQuoteSummaries: GetQuoteSummariesStateType = {
 
 export const getQuoteSummariesReducer = (
     state = initialStateGetQuoteSummaries,
-    action: QuoteSummaryActionTypes,
+    action: QuoteSummaryActionTypes | QuoteSummaryErrorActionTypes,
 ): GetQuoteSummariesStateType => {
     switch (action.type) {
         case GET_QUOTESUMMARIES:
@@ -26,8 +26,16 @@ export const getQuoteSummariesReducer = (
                 ...state,
                 quoteSummaries: action.payload,
                 loading: false,
-                error: null,
+                error: action.payload.error,
                 empty: false,
+            };
+        case ERROR_QUOTESUMMARIES:
+            return {
+                ...state,
+                quoteSummaries: action.payload,
+                loading: false,
+                error: true,
+                empty: true,
             };
         default:
             return state;

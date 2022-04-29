@@ -11,7 +11,6 @@ export interface PostTickerQuote {
 }
 
 export interface GetTickerQuote {
-  timestamp: Number;
-  name: string;
-  meta: Object;
+  result: object;
+  error: null;
 }

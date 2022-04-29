@@ -7,14 +7,7 @@ class QuoteSummaryService {
   public yahoo = new yahooRepository();
 
   public async getQuoteSummary(req: PostQuoteSummary): Promise<PostQuoteSummary> {
-    const getQuoteSummary: GetQuoteSummary = await this.yahoo.findQuoteSummary(req);
-    const model = {
-      timestamp: getQuoteSummary.defaultKeyStatistics.mostRecentQuarter.raw,
-      name: req.symbol,
-      meta: getQuoteSummary,
-    };
-    const quoteSummaries: GetQuoteSummary = await this.quoteSummaries.create(model);
-    return quoteSummaries;
+    return await this.yahoo.findQuoteSummary(req);
   }
 }
 

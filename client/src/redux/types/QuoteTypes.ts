@@ -1,6 +1,7 @@
 import { Quote } from '../interfaces/Quote'
 
 export const GET_QUOTES = 'GET_QUOTES';
+export const ERROR_QUOTES = 'ERROR_QUOTES';
 
 export interface GetQuotesStateType {
     quotes: Quote;
@@ -15,3 +16,10 @@ interface GetQuotesActionType {
 }
 
 export type QuoteActionTypes = GetQuotesActionType;
+
+interface ErrorQuotesActionType {
+    type: typeof ERROR_QUOTES;
+    payload: any;
+}
+
+export type QuoteErrorActionTypes = ErrorQuotesActionType;

@@ -7,14 +7,15 @@ class QuoteService {
   public yahoo = new yahooRepository();
 
   public async getQuote(req: PostTickerQuote): Promise<PostTickerQuote> {
-    const getTickerQuote: GetTickerQuote = await this.yahoo.findQuote(req);
-    const model = {
-      timestamp: getTickerQuote.result[0].regularMarketTime,
-      name: getTickerQuote.result[0].symbol,
-      meta: getTickerQuote.result[0],
-    };
-    const quotes: GetTickerQuote = await this.quotes.create(model);
-    return quotes;
+    // const getTickerQuote: GetTickerQuote = await this.yahoo.findQuote(req);
+    // const model = {
+    //   timestamp: getTickerQuote.result[0].regularMarketTime,
+    //   name: getTickerQuote.result[0].symbol,
+    //   meta: getTickerQuote.result[0],
+    // };
+    // const quotes: GetTickerQuote = await this.quotes.create(model);
+    // return quotes;
+    return await this.yahoo.findQuote(req);
   }
 }
 

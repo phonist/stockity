@@ -7,7 +7,7 @@ class QuotesController {
 
   public getQuote = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const getQuote: GetTickerQuote = await this.quoteService.getQuote(req.body);
+      const getQuote: GetTickerfQuote = await this.quoteService.getQuote(req.body);
       res.status(200).json({ data: getQuote, message: 'getQuote' });
     } catch (error) {
       next(error);

@@ -6,5 +6,6 @@ export interface PostQuoteSummary {
 }
 
 export interface GetQuoteSummary {
-  result: any;
+  result: object;
+  error: null;
 }

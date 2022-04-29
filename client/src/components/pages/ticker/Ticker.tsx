@@ -38,7 +38,7 @@ export default function TickerPage() {
   const [quoteSummaryParams, setQuoteSummaryParams] = useState({
     lang: "en",
     region: "US",
-    modules: "defaultKeyStatistics%2CassetProfile",
+    modules: "summaryDetail,assetProfile,fundProfile,financialData,defaultKeyStatistics,calendarEvents,incomeStatementHistory,incomeStatementHistoryQuarterly,cashflowStatementHistory,balanceSheetHistory,earnings,earningsHistory,insiderHolders,cashflowStatementHistory,cashflowStatementHistoryQuarterly,insiderTransactions,secFilings,indexTrend,sectorTrend,earningsTrend,netSharePurchaseActivity,upgradeDowngradeHistory,institutionOwnership,recommendationTrend,balanceSheetHistory,balanceSheetHistoryQuarterly,fundOwnership,majorDirectHolders,majorHoldersBreakdown,price,quoteType,esgScores",
     symbol: "AAPL"
   });
 
@@ -85,12 +85,12 @@ export default function TickerPage() {
                 height: 240,
               }}
             >
-              {/* <MetaBoard quoteParams={quoteParams} /> */}
+              <MetaBoard quoteParams={quoteParams} />
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-              <BasicTable quoteSummaryParams={quoteSummaryParams}/>
+              {/* <BasicTable quoteSummaryParams={quoteSummaryParams}/> */}
             </Paper>
           </Grid>
           <Grid item xs={12}>

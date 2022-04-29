@@ -1,6 +1,7 @@
 import { QuoteSummary } from '../interfaces/QuoteSummary'
 
 export const GET_QUOTESUMMARIES= 'GET_QUOTESUMMARIES';
+export const ERROR_QUOTESUMMARIES = 'ERROR_QUOTESUMMARIES';
 
 export interface GetQuoteSummariesStateType {
     quoteSummaries: QuoteSummary;
@@ -15,3 +16,10 @@ interface GetQuoteSummariesActionType {
 }
 
 export type QuoteSummaryActionTypes = GetQuoteSummariesActionType;
+
+interface ErrorQuoteSummariesActionType {
+    type: typeof ERROR_QUOTESUMMARIES;
+    payload: any;
+}
+
+export type QuoteSummaryErrorActionTypes = ErrorQuoteSummariesActionType;

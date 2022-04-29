@@ -2,14 +2,14 @@ import {
     GET_QUOTES,
     GetQuotesStateType,
     QuoteActionTypes,
+    QuoteErrorActionTypes,
+    ERROR_QUOTES,
 } from '../types/QuoteTypes';
 
 const initialStateGetQuotes: GetQuotesStateType = {
     quotes: {
-        _id: '',
-        timestamp: new Date(),
-        name: '',
-        meta: {}
+        result: [],
+        error: null,
     },
     loading: true,
     error: null,
@@ -18,7 +18,7 @@ const initialStateGetQuotes: GetQuotesStateType = {
 
 export const getQuotesReducer = (
     state = initialStateGetQuotes,
-    action: QuoteActionTypes,
+    action: QuoteActionTypes | QuoteErrorActionTypes,
 ): GetQuotesStateType => {
     switch (action.type) {
         case GET_QUOTES:
@@ -26,8 +26,17 @@ export const getQuotesReducer = (
                 ...state,
                 quotes: action.payload,
                 loading: false,
-                error: null,
+                error: action.payload.error,
                 empty: false,
+            };
+        case ERROR_QUOTES:
+            console.log('reducers', action.payload);
+            return {
+                ...state,
+                quotes: action.payload,
+                loading: false,
+                error: true,
+                empty: true,
             };
         default:
             return state;
