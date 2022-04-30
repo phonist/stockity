@@ -8,11 +8,21 @@ import {
 
 const initialStateGetQuotes: GetQuotesStateType = {
     quotes: {
-        result: [],
-        error: null,
+        result: [
+            {
+                symbol: '',
+                regularMarketPrice: 0,
+                regularMarketChange: 0,
+                regularMarketChangePercent: 0,
+                postMarketPrice: 0,
+                postMarketChange: 0,
+                postMarketChangePercent: 0,
+            },
+        ],
+        error: {},
     },
     loading: true,
-    error: null,
+    error: {},
     empty: true,
 };
 
@@ -30,10 +40,12 @@ export const getQuotesReducer = (
                 empty: false,
             };
         case ERROR_QUOTES:
-            console.log('reducers', action.payload);
             return {
                 ...state,
-                quotes: action.payload,
+                quotes: {
+                    result: initialStateGetQuotes.quotes.result,
+                    error: action.payload,
+                },
                 loading: false,
                 error: true,
                 empty: true,

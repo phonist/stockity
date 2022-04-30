@@ -6,7 +6,7 @@ export const getTickersAction = (tickers: Ticker): TickerActionTypes => ({
     payload: tickers,
 });
 
-export const errorTickerAction = (error: any): TickerErrorActionTypes => ({
+export const errorTickerAction = (error: Ticker): TickerErrorActionTypes => ({
     type: ERROR_TICKERS,
     payload: error,
 });

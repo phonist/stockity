@@ -73,7 +73,7 @@ export default function TickerPage() {
                 flexDirection: 'column',
               }}
             >
-              {/* <CandleStick tickerParams={tickerParams} /> */}
+              <CandleStick tickerParams={tickerParams} />
             </Paper>
           </Grid>
           <Grid item xs={12} md={4} lg={3}>
@@ -82,7 +82,7 @@ export default function TickerPage() {
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                height: 240,
+                height: 300,
               }}
             >
               <MetaBoard quoteParams={quoteParams} />
@@ -90,12 +90,12 @@ export default function TickerPage() {
           </Grid>
           <Grid item xs={12}>
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-              {/* <BasicTable quoteSummaryParams={quoteSummaryParams}/> */}
+              <BasicTable quoteSummaryParams={quoteSummaryParams}/>
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-              {/* <NestedList insightParams={insightParams}/> */}
+              <NestedList insightParams={insightParams}/>
             </Paper>
           </Grid>
         </Grid>

@@ -19,7 +19,7 @@ export type QuoteActionTypes = GetQuotesActionType;
 
 interface ErrorQuotesActionType {
     type: typeof ERROR_QUOTES;
-    payload: any;
+    payload: Quote;
 }
 
 export type QuoteErrorActionTypes = ErrorQuotesActionType;

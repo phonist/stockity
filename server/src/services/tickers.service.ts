@@ -76,19 +76,8 @@ class TickerService {
   }
 
   public async getChart(req: PostTickerChart): Promise<PostTickerChart> {
-    try {
-      const getTickerChart: GetTickerChart = await this.yahoo.findChart(req);
-      // console.log('getTickerChart',getTickerChart);
-      return getTickerChart;
-    } catch (error) {
-      throw new HttpException(error.status, error.message);
-    }
-    // try {
-    //   const getTickerChart: GetTickerChart = await this.marketStack.findChart(req);
-    //   return getTickerChart;
-    // } catch (error) {
-    //   throw new HttpException(error.status, error.message);
-    // }
+    // const getTickerChart: GetTickerChart = await this.yahoo.findChart(req);
+    return await this.yahoo.findChart(req);
   }
 
   public async autocomplete(req: string): Promise<string> {

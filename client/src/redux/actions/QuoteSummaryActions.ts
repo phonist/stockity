@@ -6,7 +6,7 @@ export const getQuoteSummariesAction = (quoteSummaries: QuoteSummary): QuoteSumm
     payload: quoteSummaries,
 });
 
-export const errorQuoteSummariesAction = (error: any): QuoteSummaryErrorActionTypes => ({
+export const errorQuoteSummariesAction = (error: QuoteSummary): QuoteSummaryErrorActionTypes => ({
     type: ERROR_QUOTESUMMARIES,
     payload: error,
 });

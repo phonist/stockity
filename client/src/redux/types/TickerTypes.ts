@@ -19,7 +19,7 @@ export type TickerActionTypes = GetTickersActionType;
 
 interface GetTickersErrorActionType {
     type: typeof ERROR_TICKERS;
-    payload: any;
+    payload: Ticker;
 }
 
 export type TickerErrorActionTypes = GetTickersErrorActionType;

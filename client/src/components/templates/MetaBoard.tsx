@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Title from '../atoms/Title';
 import { attemptGetQuotes } from '../../redux/thunks/Quotes';
 import LoadingContainer from '../organisms/Loading';
@@ -16,44 +19,40 @@ function MetaBoard(props: any) {
 
     const dispatch = useDispatch();
     const quotes = useSelector((state: AppState) => state.quotes);
-    const [value, setValue] = useState({});
 
 
     useEffect(() => {
         if(quotes.loading){
-            console.log(quotes);
-
             dispatch(attemptGetQuotes(quoteParams));
-        }else{
-            if(!quotes.error && !quotes.empty){
-                setValue(quotes);
-            }
         }
     }, [quotes.loading, quotes.empty, quotes.error]);
 
     return ( 
         <React.Fragment>
+            <CssBaseline />
+            <Container maxWidth="lg">
             {quotes.error && <ErrorContainer />}
             {quotes.empty && <EmptyContainer />}
             {quotes.loading ? (
                 <LoadingContainer />
             ) : (
-                <>
-                <Title>{value}</Title>
-                {/* <Typography component="p" variant="h4">
-                    {quotes.quotes.meta.regularMarketPrice != null && quotes.quotes.meta.regularMarketPrice.toFixed(2)}
-                    <Typography variant="caption" display="block" gutterBottom>
-                        {quotes.quotes.meta.regularMarketChange != null && quotes.quotes.meta.regularMarketChange.toFixed(2)} ({quotes.quotes.meta.regularMarketChangePercent != null && quotes.quotes.meta.regularMarketChangePercent.toFixed(2)}%)
+                <Box>
+                    <Title>{quotes.quotes.result[0].symbol}</Title>
+                    <Typography component="p" variant="h4"> 
+                        {quotes.quotes.result[0].regularMarketPrice}
+                        <Typography variant="caption" display="block" gutterBottom>
+                            {quotes.quotes.result[0].regularMarketChange != null && quotes.quotes.result[0].regularMarketChange.toFixed(2)} ({quotes.quotes.result[0].regularMarketChangePercent != null && quotes.quotes.result[0].regularMarketChangePercent.toFixed(2)}%)
+                        </Typography>
                     </Typography>
-                </Typography>
-                <Typography color="text.secondary" sx={{ flex: 1 }}>
-                    {quotes.quotes.meta.postMarketPrice != null && quotes.quotes.meta.postMarketPrice.toFixed(2)} 
-                    <Typography variant="caption" display="block" gutterBottom>
-                        {quotes.quotes.meta.postMarketChange != null && quotes.quotes.meta.postMarketChange.toFixed(2)} ({quotes.quotes.meta.postMarketChangePercent!=null && quotes.quotes.meta.postMarketChangePercent.toFixed(2)}%)
-                    </Typography>
-                </Typography> */}
-                </>
+                    <Typography color="text.secondary" sx={{ flex: 1 }}>
+                        {quotes.quotes.result[0].postMarketPrice != null && quotes.quotes.result[0].postMarketPrice.toFixed(2)} 
+                        <Typography variant="caption" display="block" gutterBottom>
+                            {quotes.quotes.result[0].postMarketChange != null && quotes.quotes.result[0].postMarketChange.toFixed(2)} ({quotes.quotes.result[0].postMarketChangePercent!=null && quotes.quotes.result[0].postMarketChangePercent.toFixed(2)}%)
+                        </Typography>
+                    </Typography> 
+                </Box>
             )}
+            </Container>
         </React.Fragment>
     );
 }

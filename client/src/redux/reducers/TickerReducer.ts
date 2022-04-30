@@ -8,16 +8,26 @@ import {
 
 const initialStateGetTickers: GetTickersStateType = {
     tickers: {
-        _id: '',
-        name: '',
-        price: 0,
-        datetime: new Date(),
-        meta: {},
-        indicators: {},
-        timestamp: [],
+        result: {
+            meta: {
+                symbol: '',
+            },
+            indicators: {
+                quote: [
+                    {
+                        open: [],
+                        high: [],
+                        low: [],
+                        close: [],
+                    }
+                ]
+            },
+            timestamp: [],
+        },
+        error: {},
     },
     loading: true,
-    error: null,
+    error: {},
     empty: true,
 };
 
@@ -31,15 +41,19 @@ export const getTickersReducer = (
                 ...state,
                 tickers: action.payload,
                 loading: false,
-                error: null,
+                error: false,
                 empty: false,
             };
         case ERROR_TICKERS:
             return {
                 ...state,
-                error: action.payload,
-                loading: true,
+                tickers: {
+                    result: initialStateGetTickers.tickers.result,
+                    error: action.payload,
+                },
+                loading: false,
                 empty: true,
+                error: true,
             };
         default:
             return state;

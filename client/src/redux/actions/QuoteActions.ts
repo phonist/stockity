@@ -6,7 +6,7 @@ export const getQuotesAction = (quotes: Quote): QuoteActionTypes => ({
     payload: quotes,
 });
 
-export const errorQuotesAction = (error: any): QuoteErrorActionTypes => ({
+export const errorQuotesAction = (error: Quote): QuoteErrorActionTypes => ({
     type: ERROR_QUOTES,
     payload: error,
 });

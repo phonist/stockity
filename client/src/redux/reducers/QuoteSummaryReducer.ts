@@ -8,11 +8,77 @@ import {
 
 const initialStateGetQuoteSummaries: GetQuoteSummariesStateType = {
     quoteSummaries: {
-        result: [],
-        error: null,
+        result: [
+            {
+                assetProfile: {},
+                recommendationTrend: {},
+                cashflowStatementHistory: {},
+                indexTrend: {},
+                defaultKeyStatistics: {
+                    enterpriseValue: {
+                        fmt: '',
+                    }, 
+                    forwardPE: {
+                        fmt: '',
+                    },        
+                    pegRatio: {
+                        fmt: '',
+                    },
+                    priceToBook: {
+                        fmt: '',
+                    },
+                    enterpriseToRevenue: {
+                        fmt: '',
+                    },
+                    enterpriseToEbitda: {
+                        fmt: '',
+                    },
+                    lastFiscalYearEnd: {
+                        fmt: '',
+                    },
+                    mostRecentQuarter: {
+                        fmt: '',
+                    },
+                },
+                quoteType: {},
+                incomeStatementHistory: {},
+                fundOwnership: {},
+                summaryDetail: {
+                    marketCap: {
+                        fmt: '',
+                    },
+                    trailingPE: {
+                        fmt: '',
+                    },
+                    priceToSalesTrailing12Months: {
+                        fmt: '',
+                    },
+                },
+                insiderHolders: {},
+                calendarEvents: {},
+                upgradeDowngradeHistory: {},
+                balanceSheetHistory: {},
+                earningsTrend: {},
+                secFilings: {},
+                institutionOwnership: {},
+                majorHoldersBreakdown: {},
+                balanceSheetHistoryQuarterly: {},
+                earningsHistory: {},
+                majorDirectHolders: {},
+                esgScores: {},
+                netSharePurchaseActivity: {},
+                insiderTransactions: {},
+                sectorTrend: {},
+                incomeStatementHistoryQuarterly: {},
+                cashflowStatementHistoryQuarterly: {},
+                earnings: {},
+                financialData: {}
+            },
+        ],
+        error: {},
     },
     loading: true,
-    error: null,
+    error: {},
     empty: true,
 };
 
@@ -32,7 +98,10 @@ export const getQuoteSummariesReducer = (
         case ERROR_QUOTESUMMARIES:
             return {
                 ...state,
-                quoteSummaries: action.payload,
+                quoteSummaries: {
+                    result: initialStateGetQuoteSummaries.quoteSummaries.result,
+                    error: action.payload,
+                },
                 loading: false,
                 error: true,
                 empty: true,

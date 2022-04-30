@@ -19,7 +19,7 @@ export type QuoteSummaryActionTypes = GetQuoteSummariesActionType;
 
 interface ErrorQuoteSummariesActionType {
     type: typeof ERROR_QUOTESUMMARIES;
-    payload: any;
+    payload: QuoteSummary;
 }
 
 export type QuoteSummaryErrorActionTypes = ErrorQuoteSummariesActionType;

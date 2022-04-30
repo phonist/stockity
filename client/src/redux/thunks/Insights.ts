@@ -1,12 +1,14 @@
-import { getInsightsAction } from "../actions/InsightActions";
+import { getInsightsAction, errorInsightsAction } from "../actions/InsightActions";
 import { Dispatch } from "redux";
-import { InsightActionTypes } from "../types/InsightTypes";
+import { InsightActionTypes, InsightErrorActionTypes } from "../types/InsightTypes";
 import { getInsights } from "../../api/insight";
 
-export const attemptGetInsights = (params:any) => async (dispatch: Dispatch<InsightActionTypes>) => {
+export const attemptGetInsights = (params:any) => async (dispatch: Dispatch<InsightActionTypes|InsightErrorActionTypes>) => {
     const insights = await getInsights(params)
-        .then(response => response.data)
-        .catch(error => error);
-
-    dispatch(getInsightsAction(insights));
+        .then(response => {
+            dispatch(getInsightsAction(response.data));
+        })
+        .catch(error => {
+            dispatch(errorInsightsAction(error));
+        }); 
 }

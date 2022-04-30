@@ -9,5 +9,6 @@ export interface PostInsight {
 }
 
 export interface GetInsight {
-  result: any;
+  result: object;
+  error: object;
 }

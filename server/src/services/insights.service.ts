@@ -7,14 +7,15 @@ class InsightService {
   public yahoo = new yahooRepository();
 
   public async getInsight(req: PostInsight): Promise<PostInsight> {
-    const getInsight: GetInsight = await this.yahoo.findInsight(req);
-    const model = {
-      timestamp: new Date().getTime(),
-      name: getInsight.finance.result.symbol,
-      meta: getInsight.finance.result,
-    };
-    const insights: GetInsight = await this.insights.create(model);
-    return insights;
+    // const getInsight: GetInsight = await this.yahoo.findInsight(req);
+    // const model = {
+    //   timestamp: new Date().getTime(),
+    //   name: getInsight.finance.result.symbol,
+    //   meta: getInsight.finance.result,
+    // };
+    // const insights: GetInsight = await this.insights.create(model);
+    // return insights;
+    return await this.yahoo.findInsight(req);
   }
 }
 

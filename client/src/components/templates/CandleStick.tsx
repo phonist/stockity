@@ -4,6 +4,9 @@ import ReactApexChart from 'react-apexcharts';
 import { useDispatch, useSelector } from 'react-redux';
 import { attemptGetTickers } from '../../redux/thunks/Tickers';
 import { AppState } from '../../redux/store';
+import LoadingContainer from '../organisms/Loading';
+import ErrorContainer from '../organisms/Error';
+import EmptyContainer from '../organisms/Empty';
 
 interface CandleStickProps {
   chart: any;
@@ -51,11 +54,13 @@ export default function CandleStick (props:any) {
     });
 
     useEffect(() => {
-      dispatch(attemptGetTickers(tickerParams));
-      if(!tickers.loading){
-        let data = tickers.tickers;
+      if(tickers.loading){
+        dispatch(attemptGetTickers(tickerParams));
+      }else{
+        let data = tickers.tickers.result[0];
         var jsonData: any = {};
         let temp: any = [];
+        console.log(data);
         data.timestamp.forEach((item:any, index:any) => 
         {
           let jsonData: any = {};
@@ -98,12 +103,14 @@ export default function CandleStick (props:any) {
           options: option,
         });
       }
-    },[tickers.loading]);
+    },[tickers.loading, tickers.empty, tickers.error]);
 
     return (
       <div>
+        {tickers.error && <ErrorContainer />}
+        {tickers.empty && <EmptyContainer />}
         {tickers.loading ? (
-          <div>Loading...</div>
+          <LoadingContainer />
         ) : (
           <ReactApexChart options={state.options} series={state.series} type="candlestick" height={350} />
         )}

@@ -15,6 +15,8 @@ import StarBorder from '@mui/icons-material/StarBorder';
 import Typography from '@mui/material/Typography';
 import { AppState } from '../../redux/store';
 import { attemptGetInsights } from '../../redux/thunks/Insights';
+import ErrorContainer from '../organisms/Error';
+import EmptyContainer from '../organisms/Empty';
 
 export default function NestedList(props: any) {
     const {
@@ -27,12 +29,10 @@ export default function NestedList(props: any) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(attemptGetInsights(insightParams));
-    }, [insights.loading]); 
-
-    const handleClick = () => {
-        setOpen(!open);
-    };
+        if(insights.loading){
+            dispatch(attemptGetInsights(insightParams));
+        }
+    }, [insights.loading, insights.empty, insights.error]); 
 
     return (
         <List
@@ -45,12 +45,14 @@ export default function NestedList(props: any) {
                 </ListSubheader>
             }
         >
+            {insights.error && <ErrorContainer />}
+            {insights.empty && <EmptyContainer />}
             {insights.loading ? (
                 <Typography>Loading...</Typography>
             ) : (
                 <>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                    {insights.insights.meta.reports.map((insight: any) => (
+                    {insights.insights.result.reports.map((insight: any) => (
                         <ListItemText
                             key={insight.id}
                             primary={insight.publishedOn}

@@ -9,7 +9,6 @@ export const attemptGetQuotes = (params:any) => async (dispatch: Dispatch<QuoteA
             dispatch(getQuotesAction(response.data));
         })
         .catch(error => {
-            console.log('error', error);
             dispatch(errorQuotesAction(error));
         });
 

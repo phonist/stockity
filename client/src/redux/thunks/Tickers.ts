@@ -7,10 +7,8 @@ export const attemptGetTickers = (params:any) => async (dispatch: Dispatch<Ticke
     const tickers = await getTickers(params)
         .then(response => {
             dispatch(getTickersAction(response.data));
-            return response.data
         })
         .catch(error => {
             dispatch(errorTickerAction(error));
-            return error
         });
 }

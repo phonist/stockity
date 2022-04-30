@@ -1,6 +1,9 @@
 export interface Insight {
-    _id: string;
-    timestamp: Date;
-    name: string;
-    meta: any;
+    result: {
+        symbol: string;
+        instrumentInfo: object;
+        reports: Array<object>;
+        companySnapshot: object;
+    };
+    error: object;
 }

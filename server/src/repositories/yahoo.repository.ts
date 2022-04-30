@@ -49,7 +49,7 @@ class YahooRepository {
         },
       })
       .then(function (response) {
-        return response.data.chart.result[0];
+        return response.data.chart;
       })
       .catch(function (error) {
         throw new HttpException(500, error);
@@ -86,15 +86,15 @@ class YahooRepository {
       .request({
         method: 'GET',
         url: `https://yfapi.net/ws/insights/v1/finance/insights`,
-        params: {
-          symbol: req.symbol,
-        },
         headers: {
           'x-api-key': process.env.YAHOO_API_KEY,
         },
+        params: {
+          symbol: req.symbol,
+        },
       })
       .then(function (response) {
-        return response.data;
+        return response.data.finance;
       })
       .catch(function (error) {
         throw new HttpException(500, error);
