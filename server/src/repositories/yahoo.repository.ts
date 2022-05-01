@@ -108,8 +108,8 @@ class YahooRepository {
         method: 'GET',
         url: `https://yfapi.net/v6/finance/autocomplete`,
         params: {
-          region: req.region,
-          lang: req.lang,
+          region: 'US',
+          lang: 'en',
           query: req.query,
         },
         headers: {
@@ -117,7 +117,7 @@ class YahooRepository {
         },
       })
       .then(function (response) {
-        return response.data;
+        return response.data; //ResultSet, error
       })
       .catch(function (error) {
         throw new HttpException(500, error);

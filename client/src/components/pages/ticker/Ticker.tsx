@@ -19,6 +19,7 @@ import {
 
 export default function TickerPage() {
   const dispatch = useDispatch();
+  const autocompletes = useSelector((state:AppState) => state.autocompletes);
 
   const [tickerParams, setTickerParams] = useState({
     range: "1mo",
@@ -47,7 +48,10 @@ export default function TickerPage() {
   });
 
   useEffect(() => {
-  }, [dispatch]);
+    if(autocompletes.isSelect){
+      console.log(autocompletes.autocompletes.ResultSet.Query);
+    }
+  }, [dispatch, autocompletes.isSelect]);
 
   return (
     <Box
@@ -73,7 +77,7 @@ export default function TickerPage() {
                 flexDirection: 'column',
               }}
             >
-              <CandleStick tickerParams={tickerParams} />
+              {/* <CandleStick tickerParams={tickerParams} /> */}
             </Paper>
           </Grid>
           <Grid item xs={12} md={4} lg={3}>
@@ -85,17 +89,17 @@ export default function TickerPage() {
                 height: 300,
               }}
             >
-              <MetaBoard quoteParams={quoteParams} />
+              {/* <MetaBoard quoteParams={quoteParams} /> */}
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-              <BasicTable quoteSummaryParams={quoteSummaryParams}/>
+              {/* <BasicTable quoteSummaryParams={quoteSummaryParams}/> */}
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-              <NestedList insightParams={insightParams}/>
+              {/* <NestedList insightParams={insightParams}/> */}
             </Paper>
           </Grid>
         </Grid>

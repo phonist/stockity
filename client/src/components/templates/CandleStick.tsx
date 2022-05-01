@@ -57,19 +57,19 @@ export default function CandleStick (props:any) {
       if(tickers.loading){
         dispatch(attemptGetTickers(tickerParams));
       }else{
-        let data = tickers.tickers.result[0];
+        let data = tickers.tickers.result;
         var jsonData: any = {};
         let temp: any = [];
         console.log(data);
-        data.timestamp.forEach((item:any, index:any) => 
+        data[0].timestamp.forEach((item:any, index:any) => 
         {
           let jsonData: any = {};
           jsonData.x = new Date(item*1000).toISOString();
           jsonData.y = [
-            Number(data.indicators.quote[0].open[index].toFixed(2)), // open
-            Number(data.indicators.quote[0].high[index].toFixed(2)), // high
-            Number(data.indicators.quote[0].low[index].toFixed(2)),  // low
-            Number(data.indicators.quote[0].close[index].toFixed(2)) // close
+            Number(data[0].indicators.quote[0].open[index].toFixed(2)), // open
+            Number(data[0].indicators.quote[0].high[index].toFixed(2)), // high
+            Number(data[0].indicators.quote[0].low[index].toFixed(2)),  // low
+            Number(data[0].indicators.quote[0].close[index].toFixed(2)) // close
           ];
           temp.push(jsonData);
         });
@@ -79,7 +79,7 @@ export default function CandleStick (props:any) {
             height: 350,
           },
           title: {
-            text: data.meta.symbol,
+            text: data[0].meta.symbol,
             align: 'left'
           },
           xaxis: {
