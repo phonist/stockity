@@ -17,6 +17,6 @@ export const attemptGetAutocomplete = (params:any) => async (dispatch: Dispatch<
         });
 }
 
-export const attemptSelectAutocomplete = () => async (dispatch: Dispatch<AutocompleteSelectActionTypes>) => {
-    dispatch(selectAutocompleteAction());
+export const attemptSelectAutocomplete = (params: any) => async (dispatch: Dispatch<AutocompleteSelectActionTypes>) => {
+    dispatch(selectAutocompleteAction(params));
 }

@@ -64,9 +64,12 @@ export default function Navigation(props:any) {
     dispatch(attemptGetAutocomplete(value));
   }
 
-  function onClose(event:any, value:any) {
-    console.log(value);
-    dispatch(attemptSelectAutocomplete());
+  function onChange(event:any, newValue:any) {
+    if(newValue) {
+      autocompletes.autocompletes.ResultSet.Query = newValue.symbol;
+      autocompletes.autocompletes.ResultSet.Result = [newValue];
+    }
+    dispatch(attemptSelectAutocomplete(autocompletes.autocompletes));
   }
 
   return (
@@ -105,7 +108,7 @@ export default function Navigation(props:any) {
           sx={{ width: 300 }}
           onInputChange={onInputChange}
           loadingText="Loading..."
-          onClose={onClose}
+          onChange={onChange}
           renderInput={(params) => <TextField {...params} label="stock" variant="standard" />}
         />
 

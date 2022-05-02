@@ -28,6 +28,7 @@ export type AutocompleteErrorActionTypes = GetAutocompleteErrorActionTypes;
 
 interface SelectAutocompleteActionTypes {
     type: typeof SELECT_AUTOCOMPLETE;
+    payload: Autocomplete;
 }
 
 export type AutocompleteSelectActionTypes = SelectAutocompleteActionTypes;

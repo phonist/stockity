@@ -21,15 +21,6 @@ export default function TickerPage() {
   const dispatch = useDispatch();
   const autocompletes = useSelector((state:AppState) => state.autocompletes);
 
-  const [tickerParams, setTickerParams] = useState({
-    range: "1mo",
-    region: "US",
-    interval: "1d",
-    lang: "en",
-    ticker: "AAPL",
-    events: "div"
-  });
-
   const [quoteParams, setQuoteParams] = useState({
     region: "US",
     lang: "en",
@@ -49,7 +40,9 @@ export default function TickerPage() {
 
   useEffect(() => {
     if(autocompletes.isSelect){
-      console.log(autocompletes.autocompletes.ResultSet.Query);
+      setQuoteParams({ ...quoteParams, symbols: autocompletes.autocompletes.ResultSet.Query });
+      setQuoteSummaryParams({ ...quoteSummaryParams, symbol: autocompletes.autocompletes.ResultSet.Query });
+      setInsightParams({ ...insightParams, symbol: autocompletes.autocompletes.ResultSet.Query });
     }
   }, [dispatch, autocompletes.isSelect]);
 
@@ -77,7 +70,7 @@ export default function TickerPage() {
                 flexDirection: 'column',
               }}
             >
-              {/* <CandleStick tickerParams={tickerParams} /> */}
+              <CandleStick />
             </Paper>
           </Grid>
           <Grid item xs={12} md={4} lg={3}>

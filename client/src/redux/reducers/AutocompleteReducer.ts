@@ -57,6 +57,10 @@ export const getAutocompletesReducer = (
         case SELECT_AUTOCOMPLETE:
             return {
                 ...state,
+                autocompletes: action.payload,
+                loading: false,
+                error: false,
+                empty: false,
                 isSelect: true,
             };
         case ERROR_AUTOCOMPLETE:

@@ -8,7 +8,7 @@ import {
 
 const initialStateGetTickers: GetTickersStateType = {
     tickers: {
-        result: {
+        result: [{
             meta: {
                 symbol: '',
             },
@@ -23,7 +23,7 @@ const initialStateGetTickers: GetTickersStateType = {
                 ]
             },
             timestamp: [],
-        },
+        }],
         error: {},
     },
     loading: true,

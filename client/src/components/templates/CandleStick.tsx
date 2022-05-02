@@ -15,12 +15,18 @@ interface CandleStickProps {
   yaxis: any;
 }
 
-export default function CandleStick (props:any) {
-    const {
-      tickerParams
-    } = props;
+export default function CandleStick () {
     const dispatch = useDispatch();
     const tickers = useSelector((state: AppState) => state.tickers);
+    const autocompletes = useSelector((state: AppState) => state.autocompletes);
+    const [tickerParams, setTickerParams] = useState({
+      range: "1mo",
+      region: "US",
+      interval: "1d",
+      lang: "en",
+      ticker: "AAPL",
+      events: "div"
+    });
 
     const [option, setOption] = useState<CandleStickProps>({
       chart: {
@@ -54,13 +60,14 @@ export default function CandleStick (props:any) {
     });
 
     useEffect(() => {
-      if(tickers.loading){
+      if(tickers.loading || autocompletes.isSelect) {
+        setTickerParams({ ...tickerParams, ticker: autocompletes.autocompletes.ResultSet.Query });
         dispatch(attemptGetTickers(tickerParams));
       }else{
+        console.log(tickers);
         let data = tickers.tickers.result;
         var jsonData: any = {};
         let temp: any = [];
-        console.log(data);
         data[0].timestamp.forEach((item:any, index:any) => 
         {
           let jsonData: any = {};
@@ -103,7 +110,7 @@ export default function CandleStick (props:any) {
           options: option,
         });
       }
-    },[tickers.loading, tickers.empty, tickers.error]);
+    },[tickers.loading, tickers.empty, tickers.error, autocompletes.isSelect]);
 
     return (
       <div>

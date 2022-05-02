@@ -11,6 +11,7 @@ export const errorAutocompleteAction = (error: Autocomplete ): AutocompleteError
     payload: error,
 });
 
-export const selectAutocompleteAction = (): AutocompleteSelectActionTypes => ({
+export const selectAutocompleteAction = (autocomplete: Autocomplete): AutocompleteSelectActionTypes => ({
     type: SELECT_AUTOCOMPLETE,
+    payload: autocomplete,
 });

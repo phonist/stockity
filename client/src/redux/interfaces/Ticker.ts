@@ -1,5 +1,5 @@
 export interface Ticker {
-    result: TickerChart
+    result: Array<TickerChart>
     error: object;
 }
 
