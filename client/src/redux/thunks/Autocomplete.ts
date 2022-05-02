@@ -3,6 +3,9 @@ import { Dispatch } from "redux";
 import { getAutocomplete } from '../../api/autocomplete';
 import { getAutocompleteAction, errorAutocompleteAction, selectAutocompleteAction } from '../actions/AutocompleteActions';
 import { AutocompleteActionTypes, AutocompleteErrorActionTypes, AutocompleteSelectActionTypes } from '../types/AutocompleteTypes';
+import { TickerPostActionTypes } from '../types/TickerTypes';
+import { updatePostTicker } from '../actions/TickerActions';
+
 
 export const attemptGetAutocomplete = (params:any) => async (dispatch: Dispatch<AutocompleteActionTypes | AutocompleteErrorActionTypes>) => {
     let postQuery = {
@@ -17,6 +20,14 @@ export const attemptGetAutocomplete = (params:any) => async (dispatch: Dispatch<
         });
 }
 
-export const attemptSelectAutocomplete = (params: any) => async (dispatch: Dispatch<AutocompleteSelectActionTypes>) => {
+export const attemptSelectAutocomplete = (params: any) => async (dispatch: Dispatch<AutocompleteSelectActionTypes|TickerPostActionTypes>) => {
     dispatch(selectAutocompleteAction(params));
+    let postTicker = {
+        range: "1mo",
+        region: "US",
+        interval: "1d",
+        lang: "en",
+        ticker: params.symbol,
+    }
+    dispatch(updatePostTicker(params));
 }

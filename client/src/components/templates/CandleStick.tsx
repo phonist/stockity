@@ -18,15 +18,14 @@ interface CandleStickProps {
 export default function CandleStick () {
     const dispatch = useDispatch();
     const tickers = useSelector((state: AppState) => state.tickers);
-    const autocompletes = useSelector((state: AppState) => state.autocompletes);
-    const [tickerParams, setTickerParams] = useState({
-      range: "1mo",
-      region: "US",
-      interval: "1d",
-      lang: "en",
-      ticker: "AAPL",
-      events: "div"
-    });
+    // const [tickerParams, setTickerParams] = useState({
+    //   range: "1mo",
+    //   region: "US",
+    //   interval: "1d",
+    //   lang: "en",
+    //   ticker: "AAPL",
+    //   events: "div"
+    // });
 
     const [option, setOption] = useState<CandleStickProps>({
       chart: {
@@ -60,9 +59,8 @@ export default function CandleStick () {
     });
 
     useEffect(() => {
-      if(tickers.loading || autocompletes.isSelect) {
-        setTickerParams({ ...tickerParams, ticker: autocompletes.autocompletes.ResultSet.Query });
-        dispatch(attemptGetTickers(tickerParams));
+      if(tickers.loading) {
+        dispatch(attemptGetTickers(tickers.postTicker));
       }else{
         console.log(tickers);
         let data = tickers.tickers.result;
@@ -110,7 +108,7 @@ export default function CandleStick () {
           options: option,
         });
       }
-    },[tickers.loading, tickers.empty, tickers.error, autocompletes.isSelect]);
+    },[tickers.loading, tickers.empty, tickers.error]);
 
     return (
       <div>

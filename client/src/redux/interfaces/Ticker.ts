@@ -24,3 +24,12 @@ interface IntraDayChart {
     low: Array<number>;
     close: Array<number>;
 }
+
+export interface PostTicker {
+    range: string,
+    region: string,
+    interval: string,
+    lang: string,
+    ticker: string,
+    events: string
+}

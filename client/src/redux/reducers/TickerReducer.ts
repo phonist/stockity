@@ -4,9 +4,19 @@ import {
     TickerActionTypes,
     TickerErrorActionTypes,
     ERROR_TICKERS,
+    POST_TICKERS,
+    TickerPostActionTypes,
 } from '../types/TickerTypes';
 
 const initialStateGetTickers: GetTickersStateType = {
+    postTicker: {
+        range: "1mo",
+        region: "US",
+        interval: "1d",
+        lang: "en",
+        ticker: "AAPL",
+        events: "div"
+    },
     tickers: {
         result: [{
             meta: {
@@ -33,7 +43,7 @@ const initialStateGetTickers: GetTickersStateType = {
 
 export const getTickersReducer = (
     state = initialStateGetTickers,
-    action: TickerActionTypes | TickerErrorActionTypes
+    action: TickerActionTypes | TickerErrorActionTypes | TickerPostActionTypes
 ): GetTickersStateType => {
     switch (action.type) {
         case GET_TICKERS:
@@ -44,6 +54,14 @@ export const getTickersReducer = (
                 error: false,
                 empty: false,
             };
+        case POST_TICKERS:
+            return {
+                ...state,
+                postTicker: action.payload,
+                loading: true,
+                error: false,
+                empty: false,
+            }
         case ERROR_TICKERS:
             return {
                 ...state,
