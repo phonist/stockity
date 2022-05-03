@@ -7,3 +7,7 @@ export interface Insight {
     };
     error: object;
 }
+
+export interface PostInsight {
+    symbol: string;
+}

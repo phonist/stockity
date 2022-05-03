@@ -1,5 +1,5 @@
-import { GET_INSIGHTS, ERROR_INSIGHTS, InsightActionTypes, InsightErrorActionTypes } from "../types/InsightTypes";
-import { Insight } from "../interfaces/Insight";
+import { GET_INSIGHTS, ERROR_INSIGHTS, POST_INSIGHTS, InsightActionTypes, InsightErrorActionTypes, InsightPostActionTypes } from "../types/InsightTypes";
+import { Insight, PostInsight } from "../interfaces/Insight";
 
 export const getInsightsAction = (insights: Insight): InsightActionTypes => ({
     type: GET_INSIGHTS,
@@ -9,4 +9,9 @@ export const getInsightsAction = (insights: Insight): InsightActionTypes => ({
 export const errorInsightsAction = (error: Insight): InsightErrorActionTypes => ({
     type: ERROR_INSIGHTS,
     payload: error,
+});
+
+export const updateInsights = (postInsight: PostInsight): InsightPostActionTypes => ({ 
+    type: POST_INSIGHTS,
+    payload: postInsight,
 });

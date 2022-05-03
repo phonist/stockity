@@ -1,9 +1,11 @@
-import { Quote } from '../interfaces/Quote'
+import { PostQuote, Quote } from '../interfaces/Quote'
 
 export const GET_QUOTES = 'GET_QUOTES';
 export const ERROR_QUOTES = 'ERROR_QUOTES';
+export const POST_QUOTES = 'POST_QUOTES';
 
 export interface GetQuotesStateType {
+    postQuote: PostQuote;
     quotes: Quote;
     loading: boolean;
     error: any;
@@ -16,6 +18,13 @@ interface GetQuotesActionType {
 }
 
 export type QuoteActionTypes = GetQuotesActionType;
+
+interface PostQuoteActionType {
+    type: typeof POST_QUOTES;
+    payload: PostQuote;
+}
+
+export type QuotePostActionTypes = PostQuoteActionType;
 
 interface ErrorQuotesActionType {
     type: typeof ERROR_QUOTES;

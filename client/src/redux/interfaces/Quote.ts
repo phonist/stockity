@@ -12,3 +12,9 @@ interface QuoteState {
     postMarketChange: number;
     postMarketChangePercent: number;
 }
+
+export interface PostQuote {
+    region: string;
+    lang: string;
+    symbols: string;
+}

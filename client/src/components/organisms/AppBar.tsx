@@ -61,10 +61,12 @@ export default function Navigation(props:any) {
   }, [autocompletes.loading, autocompletes.empty, autocompletes.error]);
   
   function onInputChange(event:any, value:any) {
+    console.log('onInputChange', event, value);
     dispatch(attemptGetAutocomplete(value));
   }
 
   function onChange(event:any, newValue:any) {
+    console.log('onChange', event, newValue);
     if(newValue) {
       autocompletes.autocompletes.ResultSet.Query = newValue.symbol;
       autocompletes.autocompletes.ResultSet.Result = [newValue];

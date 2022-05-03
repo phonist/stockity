@@ -18,19 +18,14 @@ import { attemptGetInsights } from '../../redux/thunks/Insights';
 import ErrorContainer from '../organisms/Error';
 import EmptyContainer from '../organisms/Empty';
 
-export default function NestedList(props: any) {
-    const {
-        insightParams
-    } = props;
-
+export default function NestedList() {
     const insights = useSelector((state: AppState) => state.insights);
-
     const [ open, setOpen] = useState(true);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if(insights.loading){
-            dispatch(attemptGetInsights(insightParams));
+            dispatch(attemptGetInsights(insights.postInsights));
         }
     }, [insights.loading, insights.empty, insights.error]); 
 

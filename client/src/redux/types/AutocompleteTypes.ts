@@ -9,7 +9,6 @@ export interface GetAutocompleteStateType {
     loading: boolean;
     error: boolean;
     empty: boolean;
-    isSelect: boolean;
 }
 
 interface GetAutocompleteActionTypes {

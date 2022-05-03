@@ -3,10 +3,15 @@ import {
     GetInsightsStateType,
     InsightActionTypes,
     InsightErrorActionTypes,
+    InsightPostActionTypes,
     ERROR_INSIGHTS,
+    POST_INSIGHTS,
 } from '../types/InsightTypes';
 
 const initialStateGetInsights: GetInsightsStateType = {
+    postInsights: {
+        symbol: 'AAPL',
+    },
     insights: {
         result: {
             symbol: '',
@@ -23,7 +28,7 @@ const initialStateGetInsights: GetInsightsStateType = {
 
 export const getInsightsReducer = (
     state = initialStateGetInsights,
-    action: InsightActionTypes|InsightErrorActionTypes,
+    action: InsightActionTypes|InsightErrorActionTypes|InsightPostActionTypes,
 ): GetInsightsStateType => {
     switch (action.type) {
         case GET_INSIGHTS:
@@ -33,6 +38,14 @@ export const getInsightsReducer = (
                 loading: false,
                 error: action.payload.error,
                 empty: false
+            };
+        case POST_INSIGHTS:
+            return {
+                ...state,
+                postInsights: action.payload,
+                loading: true,
+                error: true,
+                empty: true
             };
         case ERROR_INSIGHTS:
             return {

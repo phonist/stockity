@@ -12,18 +12,18 @@ import EmptyContainer from '../organisms/Empty';
 import ErrorContainer from '../organisms/Error';
 import { AppState } from '../../redux/store';
 
-function MetaBoard(props: any) {
-    const {
-        quoteParams
-    } = props;
-
+function MetaBoard() {
     const dispatch = useDispatch();
     const quotes = useSelector((state: AppState) => state.quotes);
-
+    // const [quoteParams, setQuoteParams] = useState({
+    //     region: "US",
+    //     lang: "en",
+    //     symbols: "AAPL"
+    // });
 
     useEffect(() => {
         if(quotes.loading){
-            dispatch(attemptGetQuotes(quoteParams));
+            dispatch(attemptGetQuotes(quotes.postQuote));
         }
     }, [quotes.loading, quotes.empty, quotes.error]);
 

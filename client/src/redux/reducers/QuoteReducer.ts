@@ -3,10 +3,17 @@ import {
     GetQuotesStateType,
     QuoteActionTypes,
     QuoteErrorActionTypes,
+    QuotePostActionTypes,
     ERROR_QUOTES,
+    POST_QUOTES,
 } from '../types/QuoteTypes';
 
 const initialStateGetQuotes: GetQuotesStateType = {
+    postQuote: {
+        region: 'US',
+        lang: 'en',
+        symbols: 'AAPL',
+    },
     quotes: {
         result: [
             {
@@ -28,7 +35,7 @@ const initialStateGetQuotes: GetQuotesStateType = {
 
 export const getQuotesReducer = (
     state = initialStateGetQuotes,
-    action: QuoteActionTypes | QuoteErrorActionTypes,
+    action: QuoteActionTypes | QuoteErrorActionTypes | QuotePostActionTypes,
 ): GetQuotesStateType => {
     switch (action.type) {
         case GET_QUOTES:
@@ -39,6 +46,14 @@ export const getQuotesReducer = (
                 error: action.payload.error,
                 empty: false,
             };
+        case POST_QUOTES:
+            return {
+                ...state,
+                postQuote: action.payload,
+                loading: true,
+                error: {},
+                empty: true,
+            }
         case ERROR_QUOTES:
             return {
                 ...state,

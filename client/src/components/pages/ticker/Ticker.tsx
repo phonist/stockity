@@ -19,32 +19,10 @@ import {
 
 export default function TickerPage() {
   const dispatch = useDispatch();
-  const autocompletes = useSelector((state:AppState) => state.autocompletes);
-
-  const [quoteParams, setQuoteParams] = useState({
-    region: "US",
-    lang: "en",
-    symbols: "AAPL"
-  });
-
-  const [quoteSummaryParams, setQuoteSummaryParams] = useState({
-    lang: "en",
-    region: "US",
-    modules: "summaryDetail,assetProfile,fundProfile,financialData,defaultKeyStatistics,calendarEvents,incomeStatementHistory,incomeStatementHistoryQuarterly,cashflowStatementHistory,balanceSheetHistory,earnings,earningsHistory,insiderHolders,cashflowStatementHistory,cashflowStatementHistoryQuarterly,insiderTransactions,secFilings,indexTrend,sectorTrend,earningsTrend,netSharePurchaseActivity,upgradeDowngradeHistory,institutionOwnership,recommendationTrend,balanceSheetHistory,balanceSheetHistoryQuarterly,fundOwnership,majorDirectHolders,majorHoldersBreakdown,price,quoteType,esgScores",
-    symbol: "AAPL"
-  });
-
-  const [insightParams, setInsightParams] = useState({
-    symbol: "AAPL",
-  });
+  // const autocompletes = useSelector((state:AppState) => state.autocompletes);
 
   useEffect(() => {
-    if(autocompletes.isSelect){
-      setQuoteParams({ ...quoteParams, symbols: autocompletes.autocompletes.ResultSet.Query });
-      setQuoteSummaryParams({ ...quoteSummaryParams, symbol: autocompletes.autocompletes.ResultSet.Query });
-      setInsightParams({ ...insightParams, symbol: autocompletes.autocompletes.ResultSet.Query });
-    }
-  }, [dispatch, autocompletes.isSelect]);
+  }, [dispatch]);
 
   return (
     <Box
@@ -82,17 +60,17 @@ export default function TickerPage() {
                 height: 300,
               }}
             >
-              {/* <MetaBoard quoteParams={quoteParams} /> */}
+              <MetaBoard />
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-              {/* <BasicTable quoteSummaryParams={quoteSummaryParams}/> */}
+              <BasicTable />
             </Paper>
           </Grid>
           <Grid item xs={12}>
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-              {/* <NestedList insightParams={insightParams}/> */}
+              <NestedList />
             </Paper>
           </Grid>
         </Grid>

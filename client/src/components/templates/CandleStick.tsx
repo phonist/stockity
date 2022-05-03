@@ -62,7 +62,6 @@ export default function CandleStick () {
       if(tickers.loading) {
         dispatch(attemptGetTickers(tickers.postTicker));
       }else{
-        console.log(tickers);
         let data = tickers.tickers.result;
         var jsonData: any = {};
         let temp: any = [];
@@ -100,7 +99,7 @@ export default function CandleStick () {
               enabled: true
             }
           }
-        })
+        });
         setState({
           series: [{
             data: temp

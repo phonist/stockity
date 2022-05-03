@@ -33,8 +33,7 @@ const initialStateGetAutocompletes: GetAutocompleteStateType = {
     },
     loading: true,
     error: true,
-    empty: true,
-    isSelect: false,
+    empty: true
 };
 
 export const getAutocompletesReducer = (
@@ -52,7 +51,6 @@ export const getAutocompletesReducer = (
                 loading: false,
                 error: false,
                 empty: false,
-                isSelect: false,
             };
         case SELECT_AUTOCOMPLETE:
             return {
@@ -61,7 +59,6 @@ export const getAutocompletesReducer = (
                 loading: false,
                 error: false,
                 empty: false,
-                isSelect: true,
             };
         case ERROR_AUTOCOMPLETE:
             return {
@@ -70,7 +67,6 @@ export const getAutocompletesReducer = (
                 loading: false,
                 error: true,
                 empty: true,
-                isSelect: false,
             };
         default:
             return state;

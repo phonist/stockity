@@ -15,10 +15,7 @@ import ErrorContainer from '../organisms/Error';
 import EmptyContainer from '../organisms/Empty';
 import { Grid } from '@mui/material';
 
-export default function BasicTable(props: any) {
-    const {
-        quoteSummaryParams
-    } = props;
+export default function BasicTable() {
     const quoteSummaries = useSelector((state: AppState) => state.quoteSummaries);
     const dispatch = useDispatch();
     const [valuationMeasures, setValuationMeasures] = useState([]);
@@ -26,23 +23,24 @@ export default function BasicTable(props: any) {
 
     useEffect(() => {
         if(quoteSummaries.loading) {
-            dispatch(attemptGetQuoteSummaries(quoteSummaryParams));
+            dispatch(attemptGetQuoteSummaries(quoteSummaries.postQuoteSummaries));
         }else{
             if(!quoteSummaries.error && !quoteSummaries.empty) {
+                let data = quoteSummaries.quoteSummaries.result[0];
                 setValuationMeasures ([
-                    createData('Market Cap', quoteSummaries.quoteSummaries.result[0].summaryDetail.marketCap.fmt),
-                    createData('Enterprise Value', quoteSummaries.quoteSummaries.result[0].defaultKeyStatistics.enterpriseValue.fmt),
-                    createData('Traling P/E', quoteSummaries.quoteSummaries.result[0].summaryDetail.trailingPE.fmt),
-                    createData('Forward P/E', quoteSummaries.quoteSummaries.result[0].defaultKeyStatistics.forwardPE.fmt),
-                    createData('PEG Ratio (5 years expected)', quoteSummaries.quoteSummaries.result[0].defaultKeyStatistics.pegRatio.fmt),
-                    createData('Prices/Sales(ttm)', quoteSummaries.quoteSummaries.result[0].summaryDetail.priceToSalesTrailing12Months.fmt),
-                    createData('Price/Book (mrq)', quoteSummaries.quoteSummaries.result[0].defaultKeyStatistics.priceToBook.fmt),
-                    createData('Enterprise Value/Revenue', quoteSummaries.quoteSummaries.result[0].defaultKeyStatistics.enterpriseToRevenue.fmt),
-                    createData('Enterprise Value/EBITDA', quoteSummaries.quoteSummaries.result[0].defaultKeyStatistics.enterpriseToEbitda.fmt),
+                    createData('Market Cap', data.summaryDetail.marketCap.fmt === null ? 'N/A' : data.summaryDetail.marketCap.fmt),
+                    createData('Enterprise Value', data.defaultKeyStatistics.enterpriseValue.fmt === null ? 'N/A' : data.defaultKeyStatistics.enterpriseValue.fmt),
+                    createData('Traling P/E', data.summaryDetail.trailingPE.fmt === null ? 'N/A' : data.summaryDetail.trailingPE.fmt),
+                    createData('Forward P/E', data.defaultKeyStatistics.forwardPE.fmt === null ? 'N/A' : data.defaultKeyStatistics.forwardPE.fmt),
+                    createData('PEG Ratio (5 years expected)', data.defaultKeyStatistics.pegRatio.fmt === null ? 'N/A' : data.defaultKeyStatistics.pegRatio.fmt),
+                    createData('Prices/Sales(ttm)', data.summaryDetail.priceToSalesTrailing12Months.fmt === null ? 'N/A' : data.summaryDetail.priceToSalesTrailing12Months.fmt),
+                    createData('Price/Book (mrq)', data.defaultKeyStatistics.priceToBook.fmt === null ? 'N/A' : data.defaultKeyStatistics.priceToBook.fmt),
+                    createData('Enterprise Value/Revenue', data.defaultKeyStatistics.enterpriseToRevenue.fmt === null ? 'N/A' : data.defaultKeyStatistics.enterpriseToRevenue.fmt),
+                    createData('Enterprise Value/EBITDA', data.defaultKeyStatistics.enterpriseToEbitda.fmt === null ? 'N/A' : data.defaultKeyStatistics.enterpriseToEbitda.fmt),
                 ]);
                 setFiscalYear([
-                    createData('Fiscal Year Ends', quoteSummaries.quoteSummaries.result[0].defaultKeyStatistics.lastFiscalYearEnd.fmt),
-                    createData('Most Recent Quaters', quoteSummaries.quoteSummaries.result[0].defaultKeyStatistics.mostRecentQuarter.fmt),
+                    createData('Fiscal Year Ends', data.defaultKeyStatistics.lastFiscalYearEnd.fmt === null ? 'N/A' : data.defaultKeyStatistics.lastFiscalYearEnd.fmt),
+                    createData('Most Recent Quaters', data.defaultKeyStatistics.mostRecentQuarter.fmt === null ? 'N/A' : data.defaultKeyStatistics.mostRecentQuarter.fmt),
                 ]);
             }
         }

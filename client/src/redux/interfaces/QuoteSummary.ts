@@ -68,3 +68,10 @@ interface QuoteSummaryState {
     earnings: object;
     financialData: object;
 }
+
+export interface PostQuoteSummary {
+    lang: string;
+    region: string;
+    modules: string;
+    symbol: string;
+}
