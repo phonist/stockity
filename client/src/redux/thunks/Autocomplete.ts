@@ -26,7 +26,6 @@ export const attemptGetAutocomplete = (params:any) => async (dispatch: Dispatch<
 }
 
 export const attemptSelectAutocomplete = (params: any) => async (dispatch: Dispatch<AutocompleteSelectActionTypes|TickerPostActionTypes|QuotePostActionTypes|QuoteSummaryPostActionTypes|InsightPostActionTypes>) => {
-    dispatch(selectAutocompleteAction(params));
     let postTicker = {
         range: "1mo",
         region: "US",

@@ -19,7 +19,6 @@ import {
 
 export default function TickerPage() {
   const dispatch = useDispatch();
-  // const autocompletes = useSelector((state:AppState) => state.autocompletes);
 
   useEffect(() => {
   }, [dispatch]);

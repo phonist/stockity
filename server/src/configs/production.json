@@ -11,7 +11,8 @@
         "dir": "../logs"
     },
     "cors": {
-        "origin": "your.domain.com",
-        "credentials": true
+        "origin": "*", 
+        "credentials": true,
+        "comments": "for origin, replace with domain name in production, e.g (your.domain.com)"
     }
 }
