@@ -9,6 +9,7 @@ import QuotesRoute from '@routes/quotes.route';
 import QuoteSummariesRoute from '@routes/quoteSummaries.route';
 import InsightsRoute from '@routes/insights.route';
 import AutoCompletesRoute from '@routes/autocompletes.route';
+import TradingRoute from '@routes/trading.route';
 import validateEnv from '@utils/validateEnv';
 
 validateEnv();
@@ -22,6 +23,7 @@ const app = new App([
   new QuoteSummariesRoute(),
   new InsightsRoute(),
   new AutoCompletesRoute(),
+  new TradingRoute(),
 ]);
 
 app.listen();

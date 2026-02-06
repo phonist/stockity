@@ -9,6 +9,7 @@ import CandleStick from '../../templates/CandleStick';
 import MetaBoard from '../../templates/MetaBoard';
 import BasicTable from '../../templates/Table';
 import NestedList from '../../templates/NestedList';
+import TradePanel from '../../templates/TradePanel';
 import {
   Box,
   Toolbar,
@@ -70,6 +71,11 @@ export default function TickerPage() {
           <Grid item xs={12}>
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
               <NestedList />
+            </Paper>
+          </Grid>
+          <Grid item xs={12}>
+            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+              <TradePanel />
             </Paper>
           </Grid>
         </Grid>
