@@ -1,5 +1,5 @@
 import { model, Schema, Document } from 'mongoose';
-import { QuoteSummary } from '@interfaces/quoteSummaries.interface';
+import { QuoteSummary } from '@/features/quoteSummaries/quoteSummaries.interfaces';
 
 const quoteSummarySchema: Schema = new Schema(
   { timestamp: Number, name: String, meta: Object },

@@ -1,5 +1,5 @@
 import { model, Schema, Document } from 'mongoose';
-import { Ticker } from '@interfaces/tickers.interface';
+import { Ticker } from '@/features/tickers/tickers.interfaces';
 
 const tickerSchema: Schema = new Schema(
   { timestamp: Array, meta: Object, indicators: Object },

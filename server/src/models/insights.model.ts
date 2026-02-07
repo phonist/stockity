@@ -1,5 +1,5 @@
 import { model, Schema, Document } from 'mongoose';
-import { Insight } from '@interfaces/insights.interface';
+import { Insight } from '@/features/insights/insights.interfaces';
 
 const insightSchema: Schema = new Schema(
   { timestamp: Number, name: String, meta: Object },

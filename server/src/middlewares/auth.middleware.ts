@@ -2,7 +2,7 @@ import config from 'config';
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 import { HttpException } from '@exceptions/HttpException';
-import { DataStoredInToken, RequestWithUser } from '@interfaces/auth.interface';
+import { DataStoredInToken, RequestWithUser } from '@/features/auth/auth.interfaces';
 import userModel from '@models/users.model';
 
 const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {

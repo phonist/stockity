@@ -1,5 +1,5 @@
 import config from 'config';
-import { dbConfig } from '@interfaces/db.interface';
+import { dbConfig } from '@/types/db.interface';
 
 const { host, port, database }: dbConfig = config.get('dbConfig');
 

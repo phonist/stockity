@@ -2,8 +2,8 @@ import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import App from '@/app';
-import { CreateTickerDto } from '@dtos/tickers.dto';
-import TickersRoute from '@routes/tickers.route';
+import { CreateTickerDto } from '@/features/tickers/tickers.dtos';
+import TickersRoute from '@/features/tickers/tickers.routes';
 
 afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
