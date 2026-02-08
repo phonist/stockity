@@ -1,18 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import { GetInsight } from '@/features/insights/insights.interfaces';
-import insightService from '@/features/insights/insights.service';
+import { getInsight } from '@/features/insights/insights.service';
 
-class InsightsController {
-  public insightService = new insightService();
+const getInsightHandler = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result: GetInsight = await getInsight(req.body);
+    res.status(200).json({ data: result, message: 'getInsight' });
+  } catch (error) {
+    next(error);
+  }
+};
 
-  public getInsight = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const getInsight: GetInsight = await this.insightService.getInsight(req.body);
-      res.status(200).json({ data: getInsight, message: 'getInsight' });
-    } catch (error) {
-      next(error);
-    }
-  };
-}
-
-export default InsightsController;
+export { getInsightHandler };

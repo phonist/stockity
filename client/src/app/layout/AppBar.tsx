@@ -1,110 +1,98 @@
 import React, { useEffect, useState } from 'react';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import { styled, alpha } from '@mui/material/styles';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
+import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import InputBase from '@mui/material/InputBase';
-import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store';
 import { attemptGetAutocomplete, attemptSelectAutocomplete } from '../../features/autocompletes/store/thunks/Autocomplete';
 
-const drawerWidth: number = 240;
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-export default function Navigation(props:any) {
-  const {
-    open,
-    toggleDrawer,
-  } = props;
-
+export default function Navigation() {
   const dispatch = useDispatch();
-  const autocompletes = useSelector((state:AppState) => state.autocompletes);
-  const [ defaultProps, setDefaultProps ] = useState({
-    options: autocompletes.autocompletes.ResultSet.Result,
-    getOptionLabel: (option) => option.symbol,
-  });
+  const autocompletes = useSelector((state: AppState) => state.autocompletes);
+  const [searchText, setSearchText] = useState('AAPL');
+  const [options, setOptions] = useState<any[]>([]);
 
   useEffect(() => {
-      if(!autocompletes.loading) {
-        setDefaultProps({
-          options: autocompletes.autocompletes.ResultSet.Result,
-          getOptionLabel: (option) => option.symbol,
-        });
-      }
-  }, [autocompletes.loading, autocompletes.empty, autocompletes.error, autocompletes.autocompletes.ResultSet.Query]);
-  
-  function onInputChange(event:any, value:any) {
-    if(value == '' || value.length == 0) {
-      return; }
-    dispatch(attemptGetAutocomplete(value));
-  }
+    if (!autocompletes.loading) {
+      const nextOptions = autocompletes.autocompletes.ResultSet.Result || [];
+      setOptions(nextOptions.filter(item => item && item.symbol));
+    }
+  }, [autocompletes.loading, autocompletes.autocompletes.ResultSet.Result]);
 
-  function onChange(event:any, newValue:any) {
-    if(newValue) {
-      autocompletes.autocompletes.ResultSet.Query = newValue.symbol;
-      autocompletes.autocompletes.ResultSet.Result = [newValue];
-    }else {
+  const onInputChange = (_event: any, value: string) => {
+    setSearchText(value);
+    if (value && value.trim().length > 0) {
+      dispatch(attemptGetAutocomplete(value.trim()));
+    }
+  };
+
+  const onChange = (_event: any, newValue: any) => {
+    if (!newValue || !newValue.symbol) {
       return;
     }
-    dispatch(attemptSelectAutocomplete(autocompletes.autocompletes));
-  }
+
+    dispatch(
+      attemptSelectAutocomplete({
+        ResultSet: {
+          Query: newValue.symbol,
+          Result: [newValue],
+        },
+        error: autocompletes.autocompletes.error,
+      }),
+    );
+  };
 
   return (
-    <AppBar position="absolute">
-      <Toolbar
-        sx={{
-          pr: '24px', // keep right padding when drawer closed
-        }}
-      >
-        <Typography
-          component="h1"
-          variant="h6"
-          color="inherit"
-          noWrap
-          sx={{ flexGrow: 1 }}
-        >
-          Stockity
-        </Typography>
-        
-        <Autocomplete
-          {...defaultProps}
-          id="clear-on-escape"
-          clearOnEscape
-          sx={{ width: 300 }}
-          onInputChange={onInputChange}
-          loadingText="Loading..."
-          onChange={onChange}
-          renderInput={(params) => <TextField {...params} label="stock" variant="standard" />}
-        />
+    <AppBar
+      position="sticky"
+      color="transparent"
+      elevation={0}
+      sx={{
+        mt: 2,
+        backdropFilter: 'blur(10px)',
+        backgroundColor: 'rgba(255,255,255,0.75)',
+        border: '1px solid rgba(14,122,109,0.12)',
+        borderRadius: 4,
+      }}
+    >
+      <Toolbar sx={{ gap: 2, flexWrap: 'wrap', py: 0.5 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, flexGrow: 1 }}>
+          <TrendingUpIcon sx={{ color: 'primary.main' }} />
+          <Typography variant="h5" sx={{ fontWeight: 800 }}>
+            Stockity
+          </Typography>
+          <Chip
+            label="Live Market"
+            size="small"
+            sx={{ backgroundColor: 'rgba(14,122,109,0.12)', color: 'primary.main', fontWeight: 700 }}
+          />
+        </Box>
 
+        <Autocomplete
+          options={options}
+          getOptionLabel={option => option.symbol || ''}
+          filterOptions={x => x}
+          value={null}
+          inputValue={searchText}
+          sx={{ width: { xs: '100%', sm: 320 } }}
+          onInputChange={onInputChange}
+          onChange={onChange}
+          renderInput={params => (
+            <TextField
+              {...params}
+              label="Search symbol"
+              placeholder="AAPL, TSLA, NVDA"
+              variant="outlined"
+              size="small"
+            />
+          )}
+        />
       </Toolbar>
     </AppBar>
-  )
+  );
 }

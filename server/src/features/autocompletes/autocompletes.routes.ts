@@ -1,19 +1,11 @@
 import { Router } from 'express';
-import AutocompletesController from '@/features/autocompletes/autocompletes.controller';
 import { Routes } from '@/types/routes.interface';
+import { getAutocompleteHandler } from '@/features/autocompletes/autocompletes.controller';
 
-class AutocompletesRoute implements Routes {
-  public path = '/autocomplete';
-  public router = Router();
-  public autocompletesController = new AutocompletesController();
+const router = Router();
 
-  constructor() {
-    this.initializeRoutes();
-  }
+router.post('/autocomplete/getAutocomplete', getAutocompleteHandler);
 
-  private initializeRoutes() {
-    this.router.post(`${this.path}/getAutocomplete`, this.autocompletesController.getAutocomplete);
-  }
-}
+const autocompletesRoute: Routes = { path: '/autocomplete', router };
 
-export default AutocompletesRoute;
+export default autocompletesRoute;

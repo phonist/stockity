@@ -1,12 +1,10 @@
 import { GetAutocomplete, PostAutocomplete } from '@/features/autocompletes/autocompletes.interfaces';
 import yahooRepository from '@/features/tickers/repositories/yahoo.repository';
 
-class AutocompleteService {
-  public yahoo = new yahooRepository();
+const yahoo = new yahooRepository();
 
-  public async getAutocomplete(req: PostAutocomplete): Promise<PostAutocomplete> {
-    return await this.yahoo.autocomplete(req);
-  }
-}
+const getAutocomplete = async (req: PostAutocomplete): Promise<PostAutocomplete> => {
+  return await yahoo.autocomplete(req);
+};
 
-export default AutocompleteService;
+export { getAutocomplete };

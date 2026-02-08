@@ -4,6 +4,7 @@ import request from 'supertest';
 import App from '@/app';
 import { CreateUserDto } from '@/features/users/users.dtos';
 import UsersRoute from '@/features/users/users.routes';
+import userModel from '@models/users.model';
 
 afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
@@ -12,8 +13,7 @@ afterAll(async () => {
 describe('Testing Users', () => {
   describe('[GET] /users', () => {
     it('response fineAll Users', async () => {
-      const usersRoute = new UsersRoute();
-      const users = usersRoute.usersController.userService.users;
+      const users = userModel as any;
 
       users.find = jest.fn().mockReturnValue([
         {
@@ -34,8 +34,8 @@ describe('Testing Users', () => {
       ]);
 
       (mongoose as any).connect = jest.fn();
-      const app = new App([usersRoute]);
-      return request(app.getServer()).get(`${usersRoute.path}`).expect(200);
+      const app = new App([UsersRoute]);
+      return request(app.getServer()).get(`${UsersRoute.path}`).expect(200);
     });
   });
 
@@ -43,8 +43,7 @@ describe('Testing Users', () => {
     it('response findOne User', async () => {
       const userId = 'qpwoeiruty';
 
-      const usersRoute = new UsersRoute();
-      const users = usersRoute.usersController.userService.users;
+      const users = userModel as any;
 
       users.findOne = jest.fn().mockReturnValue({
         _id: 'qpwoeiruty',
@@ -53,8 +52,8 @@ describe('Testing Users', () => {
       });
 
       (mongoose as any).connect = jest.fn();
-      const app = new App([usersRoute]);
-      return request(app.getServer()).get(`${usersRoute.path}/${userId}`).expect(200);
+      const app = new App([UsersRoute]);
+      return request(app.getServer()).get(`${UsersRoute.path}/${userId}`).expect(200);
     });
   });
 
@@ -65,8 +64,7 @@ describe('Testing Users', () => {
         password: 'q1w2e3r4',
       };
 
-      const usersRoute = new UsersRoute();
-      const users = usersRoute.usersController.userService.users;
+      const users = userModel as any;
 
       users.findOne = jest.fn().mockReturnValue(null);
       users.create = jest.fn().mockReturnValue({
@@ -76,8 +74,8 @@ describe('Testing Users', () => {
       });
 
       (mongoose as any).connect = jest.fn();
-      const app = new App([usersRoute]);
-      return request(app.getServer()).post(`${usersRoute.path}`).send(userData).expect(201);
+      const app = new App([UsersRoute]);
+      return request(app.getServer()).post(`${UsersRoute.path}`).send(userData).expect(201);
     });
   });
 
@@ -89,8 +87,7 @@ describe('Testing Users', () => {
         password: 'q1w2e3r4',
       };
 
-      const usersRoute = new UsersRoute();
-      const users = usersRoute.usersController.userService.users;
+      const users = userModel as any;
 
       if (userData.email) {
         users.findOne = jest.fn().mockReturnValue({
@@ -107,8 +104,8 @@ describe('Testing Users', () => {
       });
 
       (mongoose as any).connect = jest.fn();
-      const app = new App([usersRoute]);
-      return request(app.getServer()).put(`${usersRoute.path}/${userId}`).send(userData);
+      const app = new App([UsersRoute]);
+      return request(app.getServer()).put(`${UsersRoute.path}/${userId}`).send(userData);
     });
   });
 
@@ -116,8 +113,7 @@ describe('Testing Users', () => {
     it('response Delete User', async () => {
       const userId = '60706478aad6c9ad19a31c84';
 
-      const usersRoute = new UsersRoute();
-      const users = usersRoute.usersController.userService.users;
+      const users = userModel as any;
 
       users.findByIdAndDelete = jest.fn().mockReturnValue({
         _id: '60706478aad6c9ad19a31c84',
@@ -126,8 +122,8 @@ describe('Testing Users', () => {
       });
 
       (mongoose as any).connect = jest.fn();
-      const app = new App([usersRoute]);
-      return request(app.getServer()).delete(`${usersRoute.path}/${userId}`).expect(200);
+      const app = new App([UsersRoute]);
+      return request(app.getServer()).delete(`${UsersRoute.path}/${userId}`).expect(200);
     });
   });
 });

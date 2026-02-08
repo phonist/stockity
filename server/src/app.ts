@@ -1,5 +1,3 @@
-import '@/index';
-import config from 'config';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -10,7 +8,8 @@ import morgan from 'morgan';
 import { connect, set } from 'mongoose';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { dbConnection } from '@databases';
+import { dbConnection } from '@/config/db';
+import env from '@/config/env';
 import { Routes } from '@/types/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
@@ -53,8 +52,8 @@ class App {
   }
 
   private initializeMiddlewares() {
-    this.app.use(morgan(config.get('log.format'), { stream }));
-    this.app.use(cors({ origin: config.get('cors.origin'), credentials: config.get('cors.credentials') }));
+    this.app.use(morgan(process.env.LOG_FORMAT || 'combined', { stream }));
+    this.app.use(cors({ origin: env.clientUrl, credentials: true }));
     this.app.use(hpp());
     this.app.use(helmet());
     this.app.use(compression());

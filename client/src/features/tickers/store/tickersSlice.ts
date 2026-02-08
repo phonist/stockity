@@ -1,4 +1,5 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import type { GetTickersStateType } from './types/TickerTypes';
 import type { PostTicker, Ticker } from './interfaces/Ticker';
 

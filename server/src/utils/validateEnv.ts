@@ -1,4 +1,5 @@
 import { cleanEnv, port, str } from 'envalid';
+import env from './config/env';
 
 const validateEnv = () => {
   cleanEnv(process.env, {

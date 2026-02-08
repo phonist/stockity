@@ -1,0 +1,16 @@
+{
+  "secretKey": "change-me",
+  "dbConfig": {
+    "host": "localhost",
+    "port": 27017,
+    "database": "stockity"
+  },
+  "log": {
+    "dir": "../logs",
+    "format": "combined"
+  },
+  "cors": {
+    "origin": "http://localhost:3000",
+    "credentials": true
+  }
+}

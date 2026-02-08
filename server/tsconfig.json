@@ -24,8 +24,7 @@
       "@/*": ["*"],
       "@features/*": ["features/*"],
       "@types/*": ["types/*"],
-      "@databases": ["databases"],
-      "@exceptions/*": ["exceptions/*"],
+      "@config/*": ["config/*"],
       "@middlewares/*": ["middlewares/*"],
       "@models/*": ["models/*"],
       "@utils/*": ["utils/*"]

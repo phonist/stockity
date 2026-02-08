@@ -3,7 +3,7 @@ import { Quote } from '@/features/quotes/quotes.interfaces';
 
 const quoteSchema: Schema = new Schema(
   { timestamp: Number, name: String, meta: Object },
-  {
+  ({
     timeseries: {
       timeField: 'timestamp',
       metaField: 'name',
@@ -11,7 +11,7 @@ const quoteSchema: Schema = new Schema(
     },
     autoCreate: false,
     expireAfterSeconds: 86400,
-  },
+  } as any),
 );
 
 const quoteModel = model<Quote & Document>('Quote', quoteSchema);

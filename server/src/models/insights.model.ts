@@ -3,7 +3,7 @@ import { Insight } from '@/features/insights/insights.interfaces';
 
 const insightSchema: Schema = new Schema(
   { timestamp: Number, name: String, meta: Object },
-  {
+  ({
     timeseries: {
       timeField: 'timestamp',
       metaField: 'name',
@@ -11,7 +11,7 @@ const insightSchema: Schema = new Schema(
     },
     autoCreate: false,
     expireAfterSeconds: 86400,
-  },
+  } as any),
 );
 
 const insightModel = model<Insight & Document>('Insight', insightSchema);

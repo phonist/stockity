@@ -4,6 +4,7 @@ import request from 'supertest';
 import App from '@/app';
 import { CreateUserDto } from '@/features/users/users.dtos';
 import AuthRoute from '@/features/auth/auth.routes';
+import userModel from '@models/users.model';
 
 afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
@@ -17,8 +18,7 @@ describe('Testing Auth', () => {
         password: 'q1w2e3r4!',
       };
 
-      const authRoute = new AuthRoute();
-      const users = authRoute.authController.authService.users;
+      const users = userModel as any;
 
       users.findOne = jest.fn().mockReturnValue(null);
       users.create = jest.fn().mockReturnValue({
@@ -28,8 +28,8 @@ describe('Testing Auth', () => {
       });
 
       (mongoose as any).connect = jest.fn();
-      const app = new App([authRoute]);
-      return request(app.getServer()).post(`${authRoute.path}signup`).send(userData);
+      const app = new App([AuthRoute]);
+      return request(app.getServer()).post(`${AuthRoute.path}signup`).send(userData);
     });
   });
 
@@ -40,8 +40,7 @@ describe('Testing Auth', () => {
         password: 'q1w2e3r4!',
       };
 
-      const authRoute = new AuthRoute();
-      const users = authRoute.authController.authService.users;
+      const users = userModel as any;
 
       users.findOne = jest.fn().mockReturnValue({
         _id: '60706478aad6c9ad19a31c84',
@@ -50,9 +49,9 @@ describe('Testing Auth', () => {
       });
 
       (mongoose as any).connect = jest.fn();
-      const app = new App([authRoute]);
+      const app = new App([AuthRoute]);
       return request(app.getServer())
-        .post(`${authRoute.path}login`)
+        .post(`${AuthRoute.path}login`)
         .send(userData)
         .expect('Set-Cookie', /^Authorization=.+/);
     });

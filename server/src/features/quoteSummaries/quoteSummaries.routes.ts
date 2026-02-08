@@ -1,19 +1,11 @@
 import { Router } from 'express';
-import QuoteSummariesController from '@/features/quoteSummaries/quoteSummaries.controller';
 import { Routes } from '@/types/routes.interface';
+import { getQuoteSummaryHandler } from '@/features/quoteSummaries/quoteSummaries.controller';
 
-class QuoteSummariesRoute implements Routes {
-  public path = '/quoteSummaries';
-  public router = Router();
-  public quoteSummariesController = new QuoteSummariesController();
+const router = Router();
 
-  constructor() {
-    this.initializeRoutes();
-  }
+router.post('/quoteSummaries/getQuoteSummary', getQuoteSummaryHandler);
 
-  private initializeRoutes() {
-    this.router.post(`${this.path}/getQuoteSummary`, this.quoteSummariesController.getQuoteSummary);
-  }
-}
+const quoteSummariesRoute: Routes = { path: '/quoteSummaries', router };
 
-export default QuoteSummariesRoute;
+export default quoteSummariesRoute;

@@ -1,9 +1,9 @@
-import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import request from 'supertest';
 import App from '@/app';
 import { CreateTickerDto } from '@/features/tickers/tickers.dtos';
 import TickersRoute from '@/features/tickers/tickers.routes';
+import tickerModel from '@models/tickers.model';
 
 afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
@@ -12,8 +12,7 @@ afterAll(async () => {
 describe('Testing Tickers', () => {
   describe('[GET] /tickers', () => {
     it('response fineAll Tickers', async () => {
-      const tickersRoute = new TickersRoute();
-      const tickers = tickersRoute.tickersController.userService.tickers;
+      const tickers = tickerModel as any;
 
       tickers.find = jest.fn().mockReturnValue([
         {
@@ -35,8 +34,8 @@ describe('Testing Tickers', () => {
       ]);
 
       (mongoose as any).connect = jest.fn();
-      const app = new App([tickersRoute]);
-      return request(app.getServer()).get(`${tickersRoute.path}`).expect(200);
+      const app = new App([TickersRoute]);
+      return request(app.getServer()).get(`${TickersRoute.path}`).expect(200);
     });
   });
 
@@ -44,41 +43,40 @@ describe('Testing Tickers', () => {
     it('response findOne Ticker', async () => {
       const userId = 'qpwoeiruty';
 
-      const tickersRoute = new TickersRoute();
-      const tickers = tickersRoute.tickersController.userService.tickers;
+      const tickers = tickerModel as any;
 
       tickers.findOne = jest.fn().mockReturnValue({
         _id: 'qpwoeiruty',
-        email: 'a@email.com',
-        password: await bcrypt.hash('q1w2e3r4!', 10),
+        name: 'AAPL',
+        timestamp: new Date().toISOString(),
+        price: 123.45,
       });
 
       (mongoose as any).connect = jest.fn();
-      const app = new App([tickersRoute]);
-      return request(app.getServer()).get(`${tickersRoute.path}/${userId}`).expect(200);
+      const app = new App([TickersRoute]);
+      return request(app.getServer()).get(`${TickersRoute.path}/${userId}`).expect(200);
     });
   });
 
   describe('[POST] /tickers', () => {
     it('response Create Ticker', async () => {
       const userData: CreateTickerDto = {
-        email: 'test@email.com',
-        password: 'q1w2e3r4',
+        name: 'AAPL',
       };
 
-      const tickersRoute = new TickersRoute();
-      const tickers = tickersRoute.tickersController.userService.tickers;
+      const tickers = tickerModel as any;
 
       tickers.findOne = jest.fn().mockReturnValue(null);
       tickers.create = jest.fn().mockReturnValue({
         _id: '60706478aad6c9ad19a31c84',
-        email: userData.email,
-        password: await bcrypt.hash(userData.password, 10),
+        name: userData.name,
+        timestamp: new Date().toISOString(),
+        price: 123.45,
       });
 
       (mongoose as any).connect = jest.fn();
-      const app = new App([tickersRoute]);
-      return request(app.getServer()).post(`${tickersRoute.path}`).send(userData).expect(201);
+      const app = new App([TickersRoute]);
+      return request(app.getServer()).post(`${TickersRoute.path}`).send(userData).expect(201);
     });
   });
 
@@ -86,30 +84,30 @@ describe('Testing Tickers', () => {
     it('response Update Ticker', async () => {
       const userId = '60706478aad6c9ad19a31c84';
       const userData: CreateTickerDto = {
-        email: 'test@email.com',
-        password: 'q1w2e3r4',
+        name: 'MSFT',
       };
 
-      const tickersRoute = new TickersRoute();
-      const tickers = tickersRoute.tickersController.userService.tickers;
+      const tickers = tickerModel as any;
 
-      if (userData.email) {
+      if (userData.name) {
         tickers.findOne = jest.fn().mockReturnValue({
           _id: userId,
-          email: userData.email,
-          password: await bcrypt.hash(userData.password, 10),
+          name: userData.name,
+          timestamp: new Date().toISOString(),
+          price: 123.45,
         });
       }
 
       tickers.findByIdAndUpdate = jest.fn().mockReturnValue({
         _id: userId,
-        email: userData.email,
-        password: await bcrypt.hash(userData.password, 10),
+        name: userData.name,
+        timestamp: new Date().toISOString(),
+        price: 123.45,
       });
 
       (mongoose as any).connect = jest.fn();
-      const app = new App([tickersRoute]);
-      return request(app.getServer()).put(`${tickersRoute.path}/${userId}`).send(userData);
+      const app = new App([TickersRoute]);
+      return request(app.getServer()).put(`${TickersRoute.path}/${userId}`).send(userData);
     });
   });
 
@@ -117,18 +115,18 @@ describe('Testing Tickers', () => {
     it('response Delete Ticker', async () => {
       const userId = '60706478aad6c9ad19a31c84';
 
-      const tickersRoute = new TickersRoute();
-      const tickers = tickersRoute.tickersController.userService.tickers;
+      const tickers = tickerModel as any;
 
       tickers.findByIdAndDelete = jest.fn().mockReturnValue({
         _id: '60706478aad6c9ad19a31c84',
-        email: 'test@email.com',
-        password: await bcrypt.hash('q1w2e3r4!', 10),
+        name: 'AAPL',
+        timestamp: new Date().toISOString(),
+        price: 123.45,
       });
 
       (mongoose as any).connect = jest.fn();
-      const app = new App([tickersRoute]);
-      return request(app.getServer()).delete(`${tickersRoute.path}/${userId}`).expect(200);
+      const app = new App([TickersRoute]);
+      return request(app.getServer()).delete(`${TickersRoute.path}/${userId}`).expect(200);
     });
   });
 });

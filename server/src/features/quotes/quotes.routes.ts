@@ -1,19 +1,11 @@
 import { Router } from 'express';
-import QuotesController from '@/features/quotes/quotes.controller';
 import { Routes } from '@/types/routes.interface';
+import { getQuoteHandler } from '@/features/quotes/quotes.controller';
 
-class QuotesRoute implements Routes {
-  public path = '/quotes';
-  public router = Router();
-  public quotesController = new QuotesController();
+const router = Router();
 
-  constructor() {
-    this.initializeRoutes();
-  }
+router.post('/quotes/getQuote', getQuoteHandler);
 
-  private initializeRoutes() {
-    this.router.post(`${this.path}/getQuote`, this.quotesController.getQuote);
-  }
-}
+const quotesRoute: Routes = { path: '/quotes', router };
 
-export default QuotesRoute;
+export default quotesRoute;

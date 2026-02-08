@@ -1,4 +1,5 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import type { GetQuoteSummariesStateType } from './types/QuoteSummaryTypes';
 import type { PostQuoteSummary, QuoteSummary } from './interfaces/QuoteSummary';
 

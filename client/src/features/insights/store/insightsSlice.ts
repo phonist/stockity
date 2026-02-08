@@ -1,4 +1,5 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import type { GetInsightsStateType } from './types/InsightTypes';
 import type { Insight, PostInsight } from './interfaces/Insight';
 

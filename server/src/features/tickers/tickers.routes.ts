@@ -1,27 +1,27 @@
 import { Router } from 'express';
-import TickersController from '@/features/tickers/tickers.controller';
 import { CreateTickerDto } from '@/features/tickers/tickers.dtos';
 import { Routes } from '@/types/routes.interface';
 import validationMiddleware from '@middlewares/validation.middleware';
+import {
+  autocompleteHandler,
+  createTickerHandler,
+  deleteTickerHandler,
+  getChartHandler,
+  getTickerById,
+  getTickers,
+  updateTickerHandler,
+} from '@/features/tickers/tickers.controller';
 
-class TickersRoute implements Routes {
-  public path = '/tickers';
-  public router = Router();
-  public tickersController = new TickersController();
+const router = Router();
 
-  constructor() {
-    this.initializeRoutes();
-  }
+router.get('/tickers', getTickers);
+router.get('/tickers/:id', getTickerById);
+router.post('/tickers', validationMiddleware(CreateTickerDto, 'body'), createTickerHandler);
+router.put('/tickers/:id', validationMiddleware(CreateTickerDto, 'body', true), updateTickerHandler);
+router.delete('/tickers/:id', deleteTickerHandler);
+router.post('/tickers/getChart', getChartHandler);
+router.post('/tickers/autocomplete', autocompleteHandler);
 
-  private initializeRoutes() {
-    this.router.get(`${this.path}`, this.tickersController.getTickers);
-    this.router.get(`${this.path}/:id`, this.tickersController.getTickerById);
-    this.router.post(`${this.path}`, validationMiddleware(CreateTickerDto, 'body'), this.tickersController.createTicker);
-    this.router.put(`${this.path}/:id`, validationMiddleware(CreateTickerDto, 'body', true), this.tickersController.updateTicker);
-    this.router.delete(`${this.path}/:id`, this.tickersController.deleteTicker);
-    this.router.post(`${this.path}/getChart`, this.tickersController.getChart);
-    this.router.post(`${this.path}/autocomplete`, this.tickersController.autocomplete);
-  }
-}
+const tickersRoute: Routes = { path: '/tickers', router };
 
-export default TickersRoute;
+export default tickersRoute;

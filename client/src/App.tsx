@@ -1,27 +1,46 @@
-import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import TickerPage from './features/tickers/components/Ticker';
-import Navigation from './app/layout/AppBar';
-
+import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
+import { Routing } from './app/routes';
 
-const mdTheme = createTheme();
+const mdTheme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#0e7a6d',
+    },
+    secondary: {
+      main: '#ff6b35',
+    },
+    background: {
+      default: '#f4f7f2',
+      paper: '#ffffff',
+    },
+  },
+  shape: {
+    borderRadius: 14,
+  },
+  typography: {
+    fontFamily: 'Manrope, "Avenir Next", "Segoe UI", sans-serif',
+    h4: {
+      fontWeight: 800,
+      letterSpacing: '-0.02em',
+    },
+    h5: {
+      fontWeight: 750,
+      letterSpacing: '-0.02em',
+    },
+    h6: {
+      fontWeight: 700,
+    },
+  },
+});
 
 export default function App() {
-  const [open, setOpen] = useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
-
   return (
     <ThemeProvider theme={mdTheme}>
-        <Box sx={{ display: 'flex' }}>
-          <CssBaseline />
-          <Navigation 
-          />
-          <TickerPage />
-        </Box>
+      <CssBaseline />
+      <Routing />
     </ThemeProvider>
   );
 }

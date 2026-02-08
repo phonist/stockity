@@ -1,123 +1,106 @@
-import { any } from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { useDispatch, useSelector } from 'react-redux';
+import { Box, Typography } from '@mui/material';
 import { attemptGetTickers } from '../../../features/tickers/store/thunks/Tickers';
 import { AppState } from '../../../app/store';
 import LoadingContainer from '../common/Loading';
 import ErrorContainer from '../common/Error';
 import EmptyContainer from '../common/Empty';
 
-interface CandleStickProps {
-  chart: any;
-  title: any;
-  xaxis: any;
-  yaxis: any;
+interface ChartPoint {
+  x: string;
+  y: number[];
 }
 
-export default function CandleStick () {
-    const dispatch = useDispatch();
-    const tickers = useSelector((state: AppState) => state.tickers);
-    // const [tickerParams, setTickerParams] = useState({
-    //   range: "1mo",
-    //   region: "US",
-    //   interval: "1d",
-    //   lang: "en",
-    //   ticker: "AAPL",
-    //   events: "div"
-    // });
+export default function CandleStick() {
+  const dispatch = useDispatch();
+  const tickers = useSelector((state: AppState) => state.tickers);
+  const [series, setSeries] = useState([{ data: [] as ChartPoint[] }]);
+  const [symbol, setSymbol] = useState('AAPL');
 
-    const [option, setOption] = useState<CandleStickProps>({
-      chart: {
-        type: 'candlestick',
-        height: 350,
-      },
-      title: {
-        text: 'APPL',
-        align: 'left'
-      },
-      xaxis: {
-        type: 'category',
-        labels: {
-          formatter: function (val:any) {
-            return new Date(val).toDateString();
-          }
+  useEffect(() => {
+    if (tickers.loading) {
+      dispatch(attemptGetTickers(tickers.postTicker));
+    }
+  }, [dispatch, tickers.loading, tickers.postTicker]);
+
+  useEffect(() => {
+    if (tickers.loading || tickers.error || tickers.empty) {
+      return;
+    }
+
+    const chartResult = tickers.tickers?.result?.[0];
+    if (!chartResult || !chartResult.timestamp || !chartResult.indicators?.quote?.[0]) {
+      return;
+    }
+
+    const quotes = chartResult.indicators.quote[0];
+    const points = chartResult.timestamp
+      .map((item: any, index: number) => {
+        const open = quotes.open?.[index];
+        const high = quotes.high?.[index];
+        const low = quotes.low?.[index];
+        const close = quotes.close?.[index];
+
+        if ([open, high, low, close].some(value => value === null || value === undefined)) {
+          return null;
         }
-      },
-      yaxis: {
-        tooltip: {
-          enabled: true
-        }
-      }
-    });
-    const [chartData, setChartData] = useState([]);
-    const [state, setState] = useState({
-      series: [{
-        data: chartData
-      }],
-      options: option,
-    });
 
-    useEffect(() => {
-      if(tickers.loading) {
-        dispatch(attemptGetTickers(tickers.postTicker));
-      }else{
-        let data = tickers.tickers.result;
-        var jsonData: any = {};
-        let temp: any = [];
-        data[0].timestamp.forEach((item:any, index:any) => 
-        {
-          let jsonData: any = {};
-          jsonData.x = new Date(item*1000).toISOString();
-          jsonData.y = [
-            Number(data[0].indicators.quote[0].open[index].toFixed(2)), // open
-            Number(data[0].indicators.quote[0].high[index].toFixed(2)), // high
-            Number(data[0].indicators.quote[0].low[index].toFixed(2)),  // low
-            Number(data[0].indicators.quote[0].close[index].toFixed(2)) // close
-          ];
-          temp.push(jsonData);
-        });
-        setOption({
-          chart: {
-            type: 'candlestick',
-            height: 350,
-          },
-          title: {
-            text: data[0].meta.symbol,
-            align: 'left'
-          },
-          xaxis: {
-            type: 'category',
-            labels: {
-              formatter: function (val:any) {
-                return new Date(val).toDateString();
-              }
-            }
-          },
-          yaxis: {
-            tooltip: {
-              enabled: true
-            }
-          }
-        });
-        setState({
-          series: [{
-            data: temp
-          }],
-          options: option,
-        });
-      }
-    },[tickers.loading, tickers.empty, tickers.error]);
+        return {
+          x: new Date(Number(item) * 1000).toISOString(),
+          y: [Number(open.toFixed(2)), Number(high.toFixed(2)), Number(low.toFixed(2)), Number(close.toFixed(2))],
+        } as ChartPoint;
+      })
+      .filter(Boolean) as ChartPoint[];
 
-    return (
-      <div>
-        {tickers.error && <ErrorContainer />}
-        {tickers.empty && <EmptyContainer />}
-        {tickers.loading ? (
-          <LoadingContainer />
-        ) : (
-          <ReactApexChart options={state.options} series={state.series} type="candlestick" height={350} />
-        )}
-      </div>
-    );
+    setSeries([{ data: points }]);
+    setSymbol(chartResult.meta?.symbol || 'Ticker');
+  }, [tickers.loading, tickers.error, tickers.empty, tickers.tickers]);
+
+  return (
+    <Box>
+      <Typography variant="h6" sx={{ mb: 1.5 }}>
+        Price Action: {symbol}
+      </Typography>
+
+      {tickers.error && <ErrorContainer />}
+      {tickers.empty && <EmptyContainer />}
+      {tickers.loading ? (
+        <LoadingContainer />
+      ) : (
+        <ReactApexChart
+          type="candlestick"
+          height={360}
+          series={series}
+          options={{
+            chart: {
+              type: 'candlestick',
+              toolbar: { show: false },
+              zoom: { enabled: false },
+              foreColor: '#405044',
+            },
+            grid: {
+              borderColor: 'rgba(64,80,68,0.15)',
+            },
+            xaxis: {
+              type: 'category',
+              labels: {
+                rotate: 0,
+                formatter: val => new Date(val).toLocaleDateString(),
+              },
+            },
+            yaxis: {
+              tooltip: {
+                enabled: true,
+              },
+              labels: {
+                formatter: val => `${val.toFixed(2)}`,
+              },
+            },
+          }}
+        />
+      )}
+    </Box>
+  );
 }

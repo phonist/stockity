@@ -1,10 +1,13 @@
 # Pull Docker Hub base image
-FROM node:16-alpine3.14
+FROM node:20
+# Install yarn
+# RUN npm install --global yarn
 # Set working directory
 WORKDIR /usr/app
 # Install app dependencies
-COPY package*.json ./
-RUN yarn install
+COPY package.json yarn.lock ./
+
+RUN yarn install --check-files --network-concurrency 1
 # Copy app to container
 COPY . .
 # Run the "start" script in package.json

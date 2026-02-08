@@ -1,19 +1,11 @@
 import { Router } from 'express';
-import InsightsController from '@/features/insights/insights.controller';
 import { Routes } from '@/types/routes.interface';
+import { getInsightHandler } from '@/features/insights/insights.controller';
 
-class InsightsRoute implements Routes {
-  public path = '/insights';
-  public router = Router();
-  public insightsController = new InsightsController();
+const router = Router();
 
-  constructor() {
-    this.initializeRoutes();
-  }
+router.post('/insights/getInsight', getInsightHandler);
 
-  private initializeRoutes() {
-    this.router.post(`${this.path}/getInsight`, this.insightsController.getInsight);
-  }
-}
+const insightsRoute: Routes = { path: '/insights', router };
 
-export default InsightsRoute;
+export default insightsRoute;

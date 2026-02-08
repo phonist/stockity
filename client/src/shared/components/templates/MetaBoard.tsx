@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Title from '../atoms/Title';
+import { Box, Chip, Divider, Stack, Typography } from '@mui/material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { attemptGetQuotes } from '../../../features/quotes/store/thunks/Quotes';
 import LoadingContainer from '../common/Loading';
 import EmptyContainer from '../common/Empty';
@@ -13,48 +10,73 @@ import ErrorContainer from '../common/Error';
 import { AppState } from '../../../app/store';
 
 function MetaBoard() {
-    const dispatch = useDispatch();
-    const quotes = useSelector((state: AppState) => state.quotes);
-    // const [quoteParams, setQuoteParams] = useState({
-    //     region: "US",
-    //     lang: "en",
-    //     symbols: "AAPL"
-    // });
+  const dispatch = useDispatch();
+  const quotes = useSelector((state: AppState) => state.quotes);
+  const [isUp, setIsUp] = useState(true);
 
-    useEffect(() => {
-        if(quotes.loading){
-            dispatch(attemptGetQuotes(quotes.postQuote));
-        }
-    }, [quotes.loading, quotes.empty, quotes.error]);
+  useEffect(() => {
+    if (quotes.loading) {
+      dispatch(attemptGetQuotes(quotes.postQuote));
+    }
+  }, [dispatch, quotes.loading, quotes.postQuote]);
 
-    return ( 
-        <React.Fragment>
-            <CssBaseline />
-            <Container maxWidth="lg">
-            {quotes.error && <ErrorContainer />}
-            {quotes.empty && <EmptyContainer />}
-            {quotes.loading ? (
-                <LoadingContainer />
-            ) : (
-                <Box>
-                    <Title>{quotes.quotes.result[0].symbol}</Title>
-                    <Typography component="p" variant="h4"> 
-                        {quotes.quotes.result[0].regularMarketPrice}
-                        <Typography variant="caption" display="block" gutterBottom>
-                            {quotes.quotes.result[0].regularMarketChange != null && quotes.quotes.result[0].regularMarketChange.toFixed(2)} ({quotes.quotes.result[0].regularMarketChangePercent != null && quotes.quotes.result[0].regularMarketChangePercent.toFixed(2)}%)
-                        </Typography>
-                    </Typography>
-                    <Typography color="text.secondary" sx={{ flex: 1 }}>
-                        {quotes.quotes.result[0].postMarketPrice != null && quotes.quotes.result[0].postMarketPrice.toFixed(2)} 
-                        <Typography variant="caption" display="block" gutterBottom>
-                            {quotes.quotes.result[0].postMarketChange != null && quotes.quotes.result[0].postMarketChange.toFixed(2)} ({quotes.quotes.result[0].postMarketChangePercent!=null && quotes.quotes.result[0].postMarketChangePercent.toFixed(2)}%)
-                        </Typography>
-                    </Typography> 
-                </Box>
-            )}
-            </Container>
-        </React.Fragment>
-    );
+  useEffect(() => {
+    const latest = quotes.quotes?.result?.[0]?.regularMarketChange;
+    if (latest !== undefined && latest !== null) {
+      setIsUp(latest >= 0);
+    }
+  }, [quotes.quotes]);
+
+  const data = quotes.quotes?.result?.[0];
+
+  return (
+    <Box>
+      <Typography variant="h6" sx={{ mb: 2 }}>
+        Quote Snapshot
+      </Typography>
+
+      {quotes.error && <ErrorContainer />}
+      {quotes.empty && <EmptyContainer />}
+      {quotes.loading ? (
+        <LoadingContainer />
+      ) : (
+        <Stack spacing={2}>
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Typography variant="h4">{data?.symbol || 'N/A'}</Typography>
+            <Chip
+              icon={isUp ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+              label={isUp ? 'Bullish' : 'Bearish'}
+              color={isUp ? 'success' : 'error'}
+              size="small"
+            />
+          </Stack>
+
+          <Box>
+            <Typography variant="h5" sx={{ fontWeight: 800 }}>
+              {data?.regularMarketPrice ?? 'N/A'}
+            </Typography>
+            <Typography color={isUp ? 'success.main' : 'error.main'}>
+              {(data?.regularMarketChange ?? 0).toFixed(2)} ({(data?.regularMarketChangePercent ?? 0).toFixed(2)}%)
+            </Typography>
+          </Box>
+
+          <Divider />
+
+          <Box>
+            <Typography variant="body2" color="text.secondary">
+              After Hours
+            </Typography>
+            <Typography sx={{ fontWeight: 700 }}>
+              {(data?.postMarketPrice ?? 0).toFixed(2)}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {(data?.postMarketChange ?? 0).toFixed(2)} ({(data?.postMarketChangePercent ?? 0).toFixed(2)}%)
+            </Typography>
+          </Box>
+        </Stack>
+      )}
+    </Box>
+  );
 }
 
 export default MetaBoard;

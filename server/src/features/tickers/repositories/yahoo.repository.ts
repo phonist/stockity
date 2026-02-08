@@ -1,22 +1,18 @@
-import { HttpException } from '@/exceptions/HttpException';
+import { HttpException } from '@/utils/HttpException';
 import { PostInsight } from '@/features/insights/insights.interfaces';
 import { PostTickerQuote } from '@/features/quotes/quotes.interfaces';
 import { PostQuoteSummary } from '@/features/quoteSummaries/quoteSummaries.interfaces';
-import { PostTickerChart } from '@/features/tickers/tickers.interfaces';
+import { GetTickerChart, PostTickerChart } from '@/features/tickers/tickers.interfaces';
 import axios from 'axios';
 
 class YahooRepository {
-  //Real time quote data for stocks, ETFs, mutuals funds, etc…
+  // Real time quote data for stocks, ETFs, mutual funds, etc.
   public async findQuote(req: PostTickerQuote): Promise<any> {
     return await axios
       .request({
         method: 'GET',
-        url: `https://yfapi.net/v6/finance/quote`,
-        headers: {
-          'x-api-key': process.env.YAHOO_API_KEY,
-        },
+        url: 'https://query1.finance.yahoo.com/v7/finance/quote',
         params: {
-          modules: 'defaultKeyStatistics,assetProfile',
           symbols: req.symbols,
           region: req.region,
           lang: req.lang,
@@ -31,21 +27,17 @@ class YahooRepository {
   }
 
   // Get chart data by ticker
-  public async findChart(req: PostTickerChart): Promise<PostTickerChart> {
+  public async findChart(req: PostTickerChart): Promise<GetTickerChart> {
     return await axios
       .request({
         method: 'GET',
-        url: `https://yfapi.net/v8/finance/chart/${req.ticker}`,
+        url: `https://query1.finance.yahoo.com/v8/finance/chart/${req.ticker}`,
         params: {
           range: req.range,
           region: req.region,
           interval: req.interval,
           lang: req.lang,
-          ticker: req.ticker,
           events: req.events,
-        },
-        headers: {
-          'x-api-key': process.env.YAHOO_API_KEY,
         },
       })
       .then(function (response) {
@@ -56,20 +48,18 @@ class YahooRepository {
       });
   }
 
-  //Get very detailed information for a particular stock.
+  // Get detailed information for a particular stock.
   public async findQuoteSummary(req: PostQuoteSummary): Promise<any> {
+    const modules = Array.isArray(req.modules) ? req.modules.join(',') : req.modules;
+
     return await axios
       .request({
         method: 'GET',
-        url: `https://yfapi.net/v11/finance/quoteSummary/${req.symbol}`,
-        headers: {
-          'x-api-key': process.env.YAHOO_API_KEY,
-        },
+        url: `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${req.symbol}`,
         params: {
           lang: req.lang,
           region: req.region,
-          modules: req.modules,
-          symbol: req.symbol,
+          modules,
         },
       })
       .then(function (response) {
@@ -80,15 +70,12 @@ class YahooRepository {
       });
   }
 
-  //Research insights
+  // Research insights
   public async findInsight(req: PostInsight): Promise<any> {
     return await axios
       .request({
         method: 'GET',
-        url: `https://yfapi.net/ws/insights/v1/finance/insights`,
-        headers: {
-          'x-api-key': process.env.YAHOO_API_KEY,
-        },
+        url: 'https://query1.finance.yahoo.com/ws/insights/v1/finance/insights',
         params: {
           symbol: req.symbol,
         },
@@ -101,38 +88,32 @@ class YahooRepository {
       });
   }
 
-  //Get auto complete stocks suggestions
+  // Get auto complete stocks suggestions
   public async autocomplete(req: any): Promise<any> {
     return await axios
       .request({
         method: 'GET',
-        url: `https://yfapi.net/v6/finance/autocomplete`,
+        url: 'https://query2.finance.yahoo.com/v1/finance/search',
         params: {
-          region: 'US',
-          lang: 'en',
-          query: req.query,
-        },
-        headers: {
-          'x-api-key': process.env.YAHOO_API_KEY,
+          q: req.query,
+          quotesCount: 10,
+          newsCount: 0,
         },
       })
       .then(function (response) {
-        return response.data; //ResultSet, error
+        return response.data;
       })
       .catch(function (error) {
         throw new HttpException(500, error);
       });
   }
 
-  //get option chain for a particular symbol
+  // Get option chain for a particular symbol
   public async findOptions(req: any): Promise<any> {
     return await axios
       .request({
         method: 'GET',
-        url: `https://yfapi.net/v6/finance/options/${req.symbol}`,
-        headers: {
-          'x-api-key': process.env.YAHOO_API_KEY,
-        },
+        url: `https://query2.finance.yahoo.com/v7/finance/options/${req.symbol}`,
         params: {
           date: req.date,
         },
@@ -145,15 +126,12 @@ class YahooRepository {
       });
   }
 
-  //stock history
+  // Stock history spark data
   public async findSparks(req: any): Promise<any> {
     return await axios
       .request({
         method: 'GET',
-        url: `https://yfapi.net/v8/finance/sparks`,
-        headers: {
-          'x-api-key': process.env.YAHOO_API_KEY,
-        },
+        url: 'https://query1.finance.yahoo.com/v7/finance/spark',
         params: {
           range: req.range,
           interval: req.interval,
@@ -168,18 +146,12 @@ class YahooRepository {
       });
   }
 
-  //List similar stocks
+  // List similar stocks
   public async findRecommendationsbySymbol(req: any): Promise<any> {
     return await axios
       .request({
         method: 'GET',
-        url: `https://yfapi.net/v6/finance/recommendations/${req.symbol}`,
-        headers: {
-          'x-api-key': process.env.YAHOO_API_KEY,
-        },
-        params: {
-          symbol: req.symbol,
-        },
+        url: `https://query2.finance.yahoo.com/v6/finance/recommendationsbysymbol/${req.symbol}`,
       })
       .then(function (response) {
         return response.data;
@@ -189,15 +161,12 @@ class YahooRepository {
       });
   }
 
-  //most added to watchlist
+  // Most added to watchlist
   public async findScreener(req: any): Promise<any> {
     return await axios
       .request({
         method: 'GET',
-        url: `https://yfapi.net/v1/finance/screener/predefined/saved`,
-        headers: {
-          'x-api-key': process.env.YAHOO_API_KEY,
-        },
+        url: 'https://query1.finance.yahoo.com/v1/finance/screener/predefined/saved',
         params: {
           count: req.count,
           scrIds: req.scrIds,
@@ -211,15 +180,12 @@ class YahooRepository {
       });
   }
 
-  //Get live market summary information at the request time
+  // Get live market summary information at the request time
   public async findMarketSummary(req: any): Promise<any> {
     return await axios
       .request({
         method: 'GET',
-        url: `https://yfapi.net/v1/finance/trending/marketSummary`,
-        headers: {
-          'x-api-key': process.env.YAHOO_API_KEY,
-        },
+        url: 'https://query1.finance.yahoo.com/v1/finance/trending/marketSummary',
         params: {
           region: req.region,
           lang: req.lang,
@@ -233,15 +199,12 @@ class YahooRepository {
       });
   }
 
-  //Trending stocks
+  // Trending stocks
   public async findTrending(req: any): Promise<any> {
     return await axios
       .request({
         method: 'GET',
-        url: `https://yfapi.net/v1/finance/trending/${req.region}`,
-        headers: {
-          'x-api-key': process.env.YAHOO_API_KEY,
-        },
+        url: `https://query1.finance.yahoo.com/v1/finance/trending/${req.region}`,
         params: {
           region: req.region,
         },

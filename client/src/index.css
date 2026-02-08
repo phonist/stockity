@@ -1,13 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --surface-0: #f4f7f2;
+  --surface-1: #ffffff;
+  --ink-1: #1f2a22;
+  --ink-2: #56655b;
+  --brand-a: #0e7a6d;
+  --brand-b: #ff6b35;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Manrope', 'Avenir Next', 'Segoe UI', sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(14, 122, 109, 0.14), transparent 40%),
+    radial-gradient(circle at 100% 10%, rgba(255, 107, 53, 0.18), transparent 35%),
+    var(--surface-0);
+  color: var(--ink-1);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: 'IBM Plex Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

@@ -1,6 +1,7 @@
 export interface Ticker {
+  _id?: string;
   name: string;
-  timestamp: Date;
+  timestamp: string | Date;
   price: number;
 }
 

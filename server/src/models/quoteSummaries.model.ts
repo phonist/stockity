@@ -3,7 +3,7 @@ import { QuoteSummary } from '@/features/quoteSummaries/quoteSummaries.interface
 
 const quoteSummarySchema: Schema = new Schema(
   { timestamp: Number, name: String, meta: Object },
-  {
+  ({
     timeseries: {
       timeField: 'timestamp',
       metaField: 'name',
@@ -11,7 +11,7 @@ const quoteSummarySchema: Schema = new Schema(
     },
     autoCreate: false,
     expireAfterSeconds: 86400,
-  },
+  } as any),
 );
 
 const quoteSummaryModel = model<QuoteSummary & Document>('QuoteSummary', quoteSummarySchema);
