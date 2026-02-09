@@ -1,12 +1,12 @@
 import quoteSummaryModel from '@/models/quoteSummaries.model';
 import { GetQuoteSummary, PostQuoteSummary } from '@/features/quoteSummaries/quoteSummaries.interfaces';
-import yahooRepository from '@/features/tickers/repositories/yahoo.repository';
+import marketStackRepository from '../tickers/repositories/marketStack.repository';
 
 const quoteSummaries = quoteSummaryModel;
-const yahoo = new yahooRepository();
+const marketStack = new marketStackRepository();
 
 const getQuoteSummary = async (req: PostQuoteSummary): Promise<PostQuoteSummary> => {
-  return await yahoo.findQuoteSummary(req);
+  return await marketStack.findQuoteSummary(req);
 };
 
 export { getQuoteSummary };

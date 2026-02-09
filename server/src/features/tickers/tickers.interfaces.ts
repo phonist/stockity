@@ -15,10 +15,10 @@ export interface PostTickerChart {
 }
 
 export interface GetTickerChart {
-  result: {
+  result: Array<{
     meta: any;
     timestamp: any;
     indicators: any;
-  };
+  }>;
   error: object;
 }

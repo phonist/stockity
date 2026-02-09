@@ -10,17 +10,31 @@ const initialState: GetQuotesStateType = {
     symbols: 'AAPL',
   },
   quotes: {
-    result: [
+    data: [
       {
+        adj_close: 0,
+        adj_high: 0,
+        adj_low: 0,
+        adj_open: 0,
+        adj_volume: 0,
+        close: 0,
+        date: '',
+        dividend: 0,
+        exchange: '',
+        high: 0,
+        low: 0,
+        open: 0,
+        split_factor: 1,
         symbol: '',
-        regularMarketPrice: 0,
-        regularMarketChange: 0,
-        regularMarketChangePercent: 0,
-        postMarketPrice: 0,
-        postMarketChange: 0,
-        postMarketChangePercent: 0,
+        volume: 0,
       },
     ],
+    pagination: {
+      limit: 0,
+      offset: 0,
+      count: 0,
+      total: 0,
+    },
     error: {},
   },
   loading: true,
@@ -46,7 +60,8 @@ const quotesSlice = createSlice({
     },
     setQuoteError(state, action: PayloadAction<any>) {
       state.quotes = {
-        result: initialState.quotes.result,
+        data: initialState.quotes.data,
+        pagination: initialState.quotes.pagination,
         error: action.payload,
       };
       state.loading = false;

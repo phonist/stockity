@@ -21,13 +21,16 @@ function MetaBoard() {
   }, [dispatch, quotes.loading, quotes.postQuote]);
 
   useEffect(() => {
-    const latest = quotes.quotes?.result?.[0]?.regularMarketChange;
+    const latest = (quotes.quotes?.data?.[0]?.close ?? 0) - (quotes.quotes?.data?.[0]?.open ?? 0);
     if (latest !== undefined && latest !== null) {
       setIsUp(latest >= 0);
     }
   }, [quotes.quotes]);
 
-  const data = quotes.quotes?.result?.[0];
+  const data = quotes.quotes?.data?.[0];
+  const price = data?.close;
+  const change = (data?.close ?? 0) - (data?.open ?? 0);
+  const changePercent = data?.open ? (change / data.open) * 100 : 0;
 
   return (
     <Box>
@@ -53,10 +56,10 @@ function MetaBoard() {
 
           <Box>
             <Typography variant="h5" sx={{ fontWeight: 800 }}>
-              {data?.regularMarketPrice ?? 'N/A'}
+              {price?.toFixed(2) ?? 'N/A'}
             </Typography>
             <Typography color={isUp ? 'success.main' : 'error.main'}>
-              {(data?.regularMarketChange ?? 0).toFixed(2)} ({(data?.regularMarketChangePercent ?? 0).toFixed(2)}%)
+              {change.toFixed(2)} ({changePercent.toFixed(2)}%)
             </Typography>
           </Box>
 
@@ -64,13 +67,13 @@ function MetaBoard() {
 
           <Box>
             <Typography variant="body2" color="text.secondary">
-              After Hours
+              Day Range
             </Typography>
             <Typography sx={{ fontWeight: 700 }}>
-              {(data?.postMarketPrice ?? 0).toFixed(2)}
+              {(data?.low ?? 0).toFixed(2)} - {(data?.high ?? 0).toFixed(2)}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {(data?.postMarketChange ?? 0).toFixed(2)} ({(data?.postMarketChangePercent ?? 0).toFixed(2)}%)
+              Volume: {(data?.volume ?? 0).toLocaleString()}
             </Typography>
           </Box>
         </Stack>

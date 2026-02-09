@@ -3,12 +3,12 @@ import { HttpException } from '@/utils/HttpException';
 import { GetTickerChart, PostTickerChart, Ticker } from '@/features/tickers/tickers.interfaces';
 import tickerModel from '@models/tickers.model';
 import { isEmpty } from '@utils/util';
-import yahooRepository from '@/features/tickers/repositories/yahoo.repository';
 import marketStackRepository from '@/features/tickers/repositories/marketStack.repository';
+import finhubRepository from '@/features/tickers/repositories/finhub.repository';
 
 const tickers = tickerModel;
-const yahoo = new yahooRepository();
 const marketStack = new marketStackRepository();
+const finhub = new finhubRepository();
 
 const findAllTicker = async (): Promise<Ticker[]> => {
   const result: Ticker[] = await tickers.find();
@@ -18,7 +18,7 @@ const findAllTicker = async (): Promise<Ticker[]> => {
 const findTickerById = async (tickerId: string): Promise<Ticker> => {
   if (isEmpty(tickerId)) throw new HttpException(400, 'There are no ticker symbol provided');
   const findTicker: Ticker = await tickers.findOne({ _id: tickerId });
-  // const findTicker: Ticker = await yahoo.findQuote(tickerId);
+  // const findTicker: Ticker = await marketStack.findQuote(tickerId);
 
   if (!findTicker) throw new HttpException(409, 'Ticker not available');
 
@@ -32,7 +32,7 @@ const createTicker = async (tickerData: CreateTickerDto): Promise<Ticker> => {
 
   if (checkTicker) throw new HttpException(409, `The ticker ${tickerData.name} already exists`);
 
-  // const findTicker: Ticker = await yahoo.findQuote(tickerData.name);
+  // const findTicker: Ticker = await marketStack.findQuote(tickerData.name);
   const currentTime = new Date().getTime();
 
   const createTickerData: Ticker = await tickers.create({
@@ -53,7 +53,7 @@ const updateTicker = async (tickerId: string, tickerData: CreateTickerDto): Prom
     if (findTicker && findTicker._id != tickerId) throw new HttpException(409, `The ticker ${tickerData.name} already exists`);
   }
 
-  // const yahooData: Ticker = await yahoo.findQuote(tickerData.name);
+  // const yahooData: Ticker = await marketStack.findQuote(tickerData.name);
   const currentTime = new Date().getTime();
 
   const updateTickerById: Ticker = await tickers.findByIdAndUpdate(tickerId, {
@@ -75,11 +75,11 @@ const deleteTicker = async (tickerId: string): Promise<Ticker> => {
 };
 
 const getChart = async (req: PostTickerChart): Promise<GetTickerChart> => {
-  return await yahoo.findChart(req);
+  return await finhub.findChart(req);
 };
 
 const autocomplete = async (req: unknown): Promise<unknown> => {
-  return await yahoo.autocomplete(req);
+  return await marketStack.autocomplete(req);
 };
 
 export { findAllTicker, findTickerById, createTicker, updateTicker, deleteTicker, getChart, autocomplete };

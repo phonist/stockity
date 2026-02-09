@@ -2,7 +2,7 @@ import { HttpException } from '@/utils/HttpException';
 import { PostInsight } from '@/features/insights/insights.interfaces';
 import { PostTickerQuote } from '@/features/quotes/quotes.interfaces';
 import { PostQuoteSummary } from '@/features/quoteSummaries/quoteSummaries.interfaces';
-import { PostTickerChart } from '@/features/tickers/tickers.interfaces';
+import { GetTickerChart, PostTickerChart } from '@/features/tickers/tickers.interfaces';
 import axios from 'axios';
 
 class MarketStackRepository {
@@ -33,12 +33,12 @@ class MarketStackRepository {
       });
   }
 
-  public async findChart(req: PostTickerChart): Promise<PostTickerChart> {
+  public async findChart(req: PostTickerChart): Promise<GetTickerChart> {
     const accessKey = this.getMarketStackApiKey();
     return await axios
       .request({
         method: 'GET',
-        url: `http://api.marketstack.com/v1/intraday`,
+        url: `http://api.marketstack.com/v2/intraday`,
         params: {
           access_key: accessKey,
           symbols: req.ticker,
@@ -48,7 +48,47 @@ class MarketStackRepository {
         },
       })
       .then(function (response) {
-        return response.data.data;
+        const points = Array.isArray(response.data?.data) ? response.data.data : [];
+
+        const open: number[] = [];
+        const high: number[] = [];
+        const low: number[] = [];
+        const close: number[] = [];
+        const timestamp: number[] = [];
+
+        points.forEach((point: any) => {
+          const ts = Math.floor(new Date(point.date).getTime() / 1000);
+          if (!Number.isFinite(ts)) return;
+          if ([point.open, point.high, point.low, point.close].some((value: any) => value === null || value === undefined)) return;
+
+          timestamp.push(ts);
+          open.push(Number(point.open));
+          high.push(Number(point.high));
+          low.push(Number(point.low));
+          close.push(Number(point.close));
+        });
+
+        return {
+          result: [
+            {
+              meta: {
+                symbol: req.ticker,
+              },
+              timestamp,
+              indicators: {
+                quote: [
+                  {
+                    open,
+                    high,
+                    low,
+                    close,
+                  },
+                ],
+              },
+            },
+          ],
+          error: {},
+        };
       })
       .catch(function (error) {
         throw new HttpException(500, error);

@@ -61,6 +61,7 @@ services:
       LOG_FORMAT: ${LOG_FORMAT:-combined}
       SWAGGER_SERVER_URL: ${SWAGGER_SERVER_URL:-http://localhost:8080}
       MARKET_STACK_API_KEY: ${MARKET_STACK_API_KEY:-}
+      FINNHUB_API_KEY: ${FINNHUB_API_KEY:-}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "node", "-e", "require('net').connect(8080,'127.0.0.1').on('connect',()=>process.exit(0)).on('error',()=>process.exit(1))"]
