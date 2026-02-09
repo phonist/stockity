@@ -12,11 +12,11 @@ interface MetricItem {
   value: string;
 }
 
-const safeFmt = (value: any): string => {
-  if (!value || value.fmt === null || value.fmt === undefined || value.fmt === '') {
+const safeValue = (value: string | number | null | undefined): string => {
+  if (value === null || value === undefined || value === '') {
     return 'N/A';
   }
-  return String(value.fmt);
+  return String(value);
 };
 
 export default function BasicTable() {
@@ -35,27 +35,29 @@ export default function BasicTable() {
     if (quoteSummaries.loading || quoteSummaries.error || quoteSummaries.empty) {
       return;
     }
-
-    const data = quoteSummaries.quoteSummaries.result?.[0];
+    const data = quoteSummaries.quoteSummaries.data?.[0];
     if (!data) {
       return;
     }
 
     setValuationMeasures([
-      { name: 'Market Cap', value: safeFmt(data.summaryDetail?.marketCap) },
-      { name: 'Enterprise Value', value: safeFmt(data.defaultKeyStatistics?.enterpriseValue) },
-      { name: 'Trailing P/E', value: safeFmt(data.summaryDetail?.trailingPE) },
-      { name: 'Forward P/E', value: safeFmt(data.defaultKeyStatistics?.forwardPE) },
-      { name: 'PEG Ratio (5Y)', value: safeFmt(data.defaultKeyStatistics?.pegRatio) },
-      { name: 'Price/Sales (TTM)', value: safeFmt(data.summaryDetail?.priceToSalesTrailing12Months) },
-      { name: 'Price/Book (MRQ)', value: safeFmt(data.defaultKeyStatistics?.priceToBook) },
-      { name: 'EV/Revenue', value: safeFmt(data.defaultKeyStatistics?.enterpriseToRevenue) },
-      { name: 'EV/EBITDA', value: safeFmt(data.defaultKeyStatistics?.enterpriseToEbitda) },
+      { name: 'Open', value: safeValue(data.open?.toFixed(2)) },
+      { name: 'High', value: safeValue(data.high?.toFixed(2)) },
+      { name: 'Low', value: safeValue(data.low?.toFixed(2)) },
+      { name: 'Close', value: safeValue(data.close?.toFixed(2)) },
+      { name: 'Adjusted Open', value: safeValue(data.adj_open?.toFixed(2)) },
+      { name: 'Adjusted High', value: safeValue(data.adj_high?.toFixed(2)) },
+      { name: 'Adjusted Low', value: safeValue(data.adj_low?.toFixed(2)) },
+      { name: 'Adjusted Close', value: safeValue(data.adj_close?.toFixed(2)) },
     ]);
 
     setFiscalYear([
-      { name: 'Fiscal Year Ends', value: safeFmt(data.defaultKeyStatistics?.lastFiscalYearEnd) },
-      { name: 'Most Recent Quarter', value: safeFmt(data.defaultKeyStatistics?.mostRecentQuarter) },
+      { name: 'Volume', value: safeValue(data.volume?.toLocaleString()) },
+      { name: 'Adjusted Volume', value: safeValue(data.adj_volume?.toLocaleString()) },
+      { name: 'Exchange', value: safeValue(data.exchange) },
+      { name: 'Split Factor', value: safeValue(data.split_factor) },
+      { name: 'Dividend', value: safeValue(data.dividend) },
+      { name: 'Date', value: safeValue(data.date) },
     ]);
   }, [quoteSummaries.loading, quoteSummaries.error, quoteSummaries.empty, quoteSummaries.quoteSummaries]);
 
@@ -94,10 +96,10 @@ export default function BasicTable() {
   return (
     <Grid container spacing={2.5}>
       <Grid item xs={12} md={7}>
-        <MetricCard title="Valuation" items={valuationMeasures} />
+        <MetricCard title="Price Snapshot" items={valuationMeasures} />
       </Grid>
       <Grid item xs={12} md={5}>
-        <MetricCard title="Financial Highlights" items={fiscalYear} />
+        <MetricCard title="Market Details" items={fiscalYear} />
       </Grid>
     </Grid>
   );

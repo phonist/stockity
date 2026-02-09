@@ -11,7 +11,7 @@ const initialState: GetInsightsStateType = {
     result: {
       symbol: '',
       instrumentInfo: {},
-      reports: [{}],
+      reports: [],
       companySnapshot: {},
     },
     error: {},
@@ -28,13 +28,13 @@ const insightsSlice = createSlice({
     setInsights(state, action: PayloadAction<Insight>) {
       state.insights = action.payload;
       state.loading = false;
-      state.error = action.payload.error;
-      state.empty = false;
+      state.error = false;
+      state.empty = !action.payload.result?.reports?.length;
     },
     setPostInsights(state, action: PayloadAction<PostInsight>) {
       state.postInsights = action.payload;
       state.loading = true;
-      state.error = true;
+      state.error = false;
       state.empty = true;
     },
     setInsightsError(state, action: PayloadAction<any>) {

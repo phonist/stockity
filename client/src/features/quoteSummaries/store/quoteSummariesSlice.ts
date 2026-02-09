@@ -12,74 +12,35 @@ const initialState: GetQuoteSummariesStateType = {
     symbol: 'AAPL',
   },
   quoteSummaries: {
-    result: [
-      {
-        assetProfile: {},
-        recommendationTrend: {},
-        cashflowStatementHistory: {},
-        indexTrend: {},
-        defaultKeyStatistics: {
-          enterpriseValue: {
-            fmt: '',
-          },
-          forwardPE: {
-            fmt: '',
-          },
-          pegRatio: {
-            fmt: '',
-          },
-          priceToBook: {
-            fmt: '',
-          },
-          enterpriseToRevenue: {
-            fmt: '',
-          },
-          enterpriseToEbitda: {
-            fmt: '',
-          },
-          lastFiscalYearEnd: {
-            fmt: '',
-          },
-          mostRecentQuarter: {
-            fmt: '',
-          },
-        },
-        quoteType: {},
-        incomeStatementHistory: {},
-        fundOwnership: {},
-        summaryDetail: {
-          marketCap: {
-            fmt: '',
-          },
-          trailingPE: {
-            fmt: '',
-          },
-          priceToSalesTrailing12Months: {
-            fmt: '',
-          },
-        },
-        insiderHolders: {},
-        calendarEvents: {},
-        upgradeDowngradeHistory: {},
-        balanceSheetHistory: {},
-        earningsTrend: {},
-        secFilings: {},
-        institutionOwnership: {},
-        majorHoldersBreakdown: {},
-        balanceSheetHistoryQuarterly: {},
-        earningsHistory: {},
-        majorDirectHolders: {},
-        esgScores: {},
-        netSharePurchaseActivity: {},
-        insiderTransactions: {},
-        sectorTrend: {},
-        incomeStatementHistoryQuarterly: {},
-        cashflowStatementHistoryQuarterly: {},
-        earnings: {},
-        financialData: {},
+    data: {
+      pagination: {
+        limit: 0,
+        offset: 0,
+        count: 0,
+        total: 0,
       },
-    ],
-    error: {},
+      data: [
+        {
+          open: 0,
+          high: 0,
+          low: 0,
+          close: 0,
+          volume: 0,
+          adj_high: 0,
+          adj_low: 0,
+          adj_close: 0,
+          adj_open: 0,
+          adj_volume: 0,
+          split_factor: 1,
+          dividend: 0,
+          symbol: '',
+          exchange: '',
+          date: '',
+        },
+      ],
+    },
+    message: '',
+    error: undefined,
   },
   loading: true,
   error: {},
@@ -104,7 +65,8 @@ const quoteSummariesSlice = createSlice({
     },
     setQuoteSummariesError(state, action: PayloadAction<any>) {
       state.quoteSummaries = {
-        result: initialState.quoteSummaries.result,
+        data: initialState.quoteSummaries.data,
+        message: '',
         error: action.payload,
       };
       state.loading = false;

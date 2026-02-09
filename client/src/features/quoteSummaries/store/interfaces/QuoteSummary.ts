@@ -1,72 +1,37 @@
 export interface QuoteSummary {
-    result: Array<QuoteSummaryState>;
-    error: object;
+    data: QuoteSummaryData;
+    message: string;
+    error?: object;
+}
+
+interface QuoteSummaryData {
+    pagination: Pagination;
+    data: Array<QuoteSummaryState>;
+}
+
+interface Pagination {
+    limit: number;
+    offset: number;
+    count: number;
+    total: number;
 }
 
 interface QuoteSummaryState {
-    assetProfile: object;
-    recommendationTrend: object;
-    cashflowStatementHistory: object;
-    indexTrend: object;
-    defaultKeyStatistics: {
-        enterpriseValue: {
-            fmt: string;
-        }, 
-        forwardPE: {
-            fmt: string;
-        },        
-        pegRatio: {
-            fmt: string;
-        },
-        priceToBook: {
-            fmt: string;
-        },
-        enterpriseToRevenue: {
-            fmt: string;
-        },
-        enterpriseToEbitda: {
-            fmt: string;
-        },
-        lastFiscalYearEnd: {
-            fmt: string;
-        },
-        mostRecentQuarter: {
-            fmt: string;
-        },
-    };
-    quoteType: object;
-    incomeStatementHistory: object;
-    fundOwnership: object;
-    summaryDetail: {
-        marketCap: {
-            fmt: string;
-        },
-        trailingPE: {
-            fmt: string;
-        },
-        priceToSalesTrailing12Months: {
-            fmt: string;
-        },
-    };
-    insiderHolders: object;
-    calendarEvents: object;
-    upgradeDowngradeHistory: object;
-    balanceSheetHistory: object;
-    earningsTrend: object;
-    secFilings: object;
-    institutionOwnership: object;
-    majorHoldersBreakdown: object;
-    balanceSheetHistoryQuarterly: object;
-    earningsHistory: object;
-    majorDirectHolders: object;
-    esgScores: object;
-    netSharePurchaseActivity: object;
-    insiderTransactions: object;
-    sectorTrend: object;
-    incomeStatementHistoryQuarterly: object;
-    cashflowStatementHistoryQuarterly: object;
-    earnings: object;
-    financialData: object;
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    volume: number;
+    adj_high: number;
+    adj_low: number;
+    adj_close: number;
+    adj_open: number;
+    adj_volume: number;
+    split_factor: number;
+    dividend: number;
+    symbol: string;
+    exchange: string;
+    date: string;
 }
 
 export interface PostQuoteSummary {

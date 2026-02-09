@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { AppState } from '../../../app/store';
 import { attemptGetInsights } from '../../../features/insights/store/thunks/Insights';
+import type { InsightReport } from '../../../features/insights/store/interfaces/Insight';
 import ErrorContainer from '../common/Error';
 import EmptyContainer from '../common/Empty';
 import LoadingContainer from '../common/Loading';
@@ -53,7 +54,7 @@ export default function NestedList() {
 
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List sx={{ width: '100%', p: 0 }}>
-          {reports.map((insight: any, index: number) => (
+          {reports.map((insight: InsightReport, index: number) => (
             <React.Fragment key={insight.id || `${insight.title}-${index}`}>
               <ListItem alignItems="flex-start" sx={{ px: 0 }}>
                 <ListItemText
